@@ -43,7 +43,7 @@ import Manga from '~/models/Manga'
 export default Vue.extend({
   computed: {
     mangas(): Manga[] {
-      return this.$store.state.manga.items
+      return this.$accessor.manga.latest.items
     },
   },
 })

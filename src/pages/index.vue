@@ -10,12 +10,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { MangaActions } from '~/store/manga/actions'
+import { MangaActions } from '~/store/manga'
 
 export default Vue.extend({
   layout: 'dashboard',
   async asyncData({ store }): Promise<void> {
-    await store.dispatch(MangaActions.GET_LIST_MANGA)
+    await store.dispatch(MangaActions.GET_LATEST_MANGA)
   },
 })
 </script>

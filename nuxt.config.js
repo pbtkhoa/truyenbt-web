@@ -43,7 +43,11 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/style-resources'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/style-resources',
+    'nuxt-typed-vuex',
+  ],
   /*
    ** Nuxt.js modules
    */
