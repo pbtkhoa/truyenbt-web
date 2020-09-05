@@ -34,7 +34,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: ['~/plugins/axios'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -55,7 +55,9 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:8000/api',
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
@@ -66,5 +68,9 @@ export default {
 
   styleResources: {
     scss: ['./assets/vars/*.scss', './assets/helpers/*.scss'],
+  },
+
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
   },
 }

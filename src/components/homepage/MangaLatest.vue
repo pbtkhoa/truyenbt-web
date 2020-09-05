@@ -3,25 +3,25 @@
     <div :class="$style.heading"><h2>Truyện mới cập nhật</h2></div>
     <div :class="$style.mangaContent">
       <ul class="row p-0 mb-0">
-        <li :class="[$style.mangaItem, 'col-md-3']">
-          <a :class="$style.mangaItemImage" href="#">
-            <img
-              src="http://demo.mangabooth.com/wp-content/uploads/2017/10/wallhaven-556142-110x150.jpg"
-              alt="Tu Tiên Giả Đại Chiến Siêu Năng Lực"
-            />
+        <li
+          v-for="manga in mangas"
+          :key="manga._id"
+          :class="[$style.mangaItem, 'col-md-3']"
+        >
+          <a :class="$style.mangaItemImage" href="">
+            <img :src="manga.imagePreview" :alt="manga.name" />
           </a>
           <h3 :class="$style.mangaItemTitle">
-            <a href="#">Tu Tiên Giả Đại Chiến Siêu Năng Lực</a>
+            <a href="#">{{ manga.name }}</a>
           </h3>
-          <div :class="$style.mangaItemChapters">
+          <div
+            v-for="chapter in manga.chapters"
+            :key="chapter._id"
+            :class="$style.mangaItemChapters"
+          >
             <div :class="$style.chapterInfo">
-              <a href="#">Chương 1</a> <time>29 phut truoc</time>
-            </div>
-            <div :class="$style.chapterInfo">
-              <a href="#">Chương 1</a> <time>29 phut truoc</time>
-            </div>
-            <div :class="$style.chapterInfo">
-              <a href="#">Chương 1</a> <time>29 phut truoc</time>
+              <a href="#">Chương {{ chapter.number }}</a>
+              <time>29 phut truoc</time>
             </div>
           </div>
         </li>
@@ -38,8 +38,15 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Manga from '~/models/Manga'
 
-export default Vue.extend({})
+export default Vue.extend({
+  computed: {
+    mangas(): Manga[] {
+      return this.$store.state.manga.items
+    },
+  },
+})
 </script>
 
 <style module lang="scss">
@@ -86,8 +93,11 @@ export default Vue.extend({})
           }
         }
         .mangaItemTitle {
-          font-size: $font-size-base * 0.9;
           text-align: center;
+          font-size: $font-size-base * 0.9;
+          line-height: $font-size-base * 1.1;
+          height: $font-size-base * 2.2;
+          overflow: hidden;
           a {
             text-decoration: none;
             color: $black;
