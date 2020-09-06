@@ -47,6 +47,7 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
     'nuxt-typed-vuex',
+    '@nuxtjs/moment',
   ],
   /*
    ** Nuxt.js modules

@@ -13,7 +13,8 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^1.0.0",
     "@nuxtjs/axios": "^5.12.0",
-    "nuxt": "^2.14.0"
+    "nuxt": "^2.14.0",
+    "vue-select": "^3.10.8"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.0",
@@ -21,7 +22,9 @@
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-config-typescript": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/style-resources": "^1.0.0",
+    "@types/vue-select": "^2.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",

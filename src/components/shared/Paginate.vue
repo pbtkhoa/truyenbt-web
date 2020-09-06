@@ -1,11 +1,15 @@
 <template>
-  <ul v-if="!noLiSurround" :class="containerClass">
+  <ul :class="[$style.pagination, containerClass]">
     <li
       v-if="firstLastButton"
-      :class="[pageClass, firstPageSelected() ? disabledClass : '']"
+      :class="[
+        $style.list,
+        pageClass,
+        firstPageSelected() ? disabledClass : '',
+      ]"
     >
       <a
-        :class="pageLinkClass"
+        :class="[$style.link, pageLinkClass]"
         :tabindex="firstPageSelected() ? -1 : 0"
         @click="selectFirstPage()"
         @keyup.enter="selectFirstPage()"
@@ -15,11 +19,15 @@
 
     <li
       v-if="!(firstPageSelected() && hidePrevNext)"
-      :class="[prevClass, firstPageSelected() ? disabledClass : '']"
+      :class="[
+        $style.list,
+        prevClass,
+        firstPageSelected() ? disabledClass : '',
+      ]"
     >
       <a
         :tabindex="firstPageSelected() ? -1 : 0"
-        :class="prevLinkClass"
+        :class="[$style.link, prevLinkClass]"
         @click="prevPage()"
         @keyup.enter="prevPage()"
         >{{ prevText }}</a
@@ -30,25 +38,29 @@
       v-for="(page, idx) in pages"
       :key="idx"
       :class="[
+        $style.list,
         pageClass,
-        page.selected ? activeClass : '',
+        page.selected ? $style.active : '',
         page.disabled ? disabledClass : '',
         page.breakView ? breakViewClass : '',
       ]"
     >
       <a
         v-if="page.breakView"
-        :class="[pageLinkClass, breakViewLinkClass]"
+        :class="[$style.breakView, pageLinkClass, breakViewLinkClass]"
         tabindex="0"
         ><slot name="breakViewContent">{{ breakViewText }}</slot></a
       >
-      <a v-else-if="page.disabled" :class="pageLinkClass" tabindex="0">{{
-        page.content
-      }}</a>
+      <a
+        v-else-if="page.disabled"
+        :class="[$style.link, pageLinkClass]"
+        tabindex="0"
+        >{{ page.content }}</a
+      >
       <a
         v-else
         tabindex="0"
-        :class="pageLinkClass"
+        :class="[$style.link, pageLinkClass]"
         @click="handlePageSelected(page.index + 1)"
         @keyup.enter="handlePageSelected(page.index + 1)"
         >{{ page.content }}</a
@@ -56,10 +68,10 @@
     </li>
     <li
       v-if="!(lastPageSelected() && hidePrevNext)"
-      :class="[nextClass, lastPageSelected() ? disabledClass : '']"
+      :class="[$style.list, nextClass, lastPageSelected() ? disabledClass : '']"
     >
       <a
-        :class="nextLinkClass"
+        :class="[$style.link, nextLinkClass]"
         :tabindex="lastPageSelected() ? -1 : 0"
         @click="nextPage()"
         @keyup.enter="nextPage()"
@@ -69,10 +81,10 @@
 
     <li
       v-if="firstLastButton"
-      :class="[pageClass, lastPageSelected() ? disabledClass : '']"
+      :class="[$style.list, pageClass, lastPageSelected() ? disabledClass : '']"
     >
       <a
-        :class="pageLinkClass"
+        :class="[$style.link, pageLinkClass]"
         :tabindex="lastPageSelected() ? -1 : 0"
         @click="selectLastPage()"
         @keyup.enter="selectLastPage()"
@@ -80,71 +92,6 @@
       >
     </li>
   </ul>
-
-  <div v-else :class="containerClass">
-    <a
-      v-if="firstLastButton"
-      :class="[pageLinkClass, firstPageSelected() ? disabledClass : '']"
-      tabindex="0"
-      @click="selectFirstPage()"
-      @keyup.enter="selectFirstPage()"
-      >{{ firstButtonText }}</a
-    >
-    <a
-      v-if="!(firstPageSelected() && hidePrevNext)"
-      :class="[prevLinkClass, firstPageSelected() ? disabledClass : '']"
-      tabindex="0"
-      @click="prevPage()"
-      @keyup.enter="prevPage()"
-      >{{ prevText }}</a
-    >
-    <template v-for="page in pages">
-      <a
-        v-if="page.breakView"
-        :class="[
-          pageLinkClass,
-          breakViewLinkClass,
-          page.disabled ? disabledClass : '',
-        ]"
-        tabindex="0"
-        ><slot name="breakViewContent">{{ breakViewText }}</slot></a
-      >
-      <a
-        v-else-if="page.disabled"
-        :class="[
-          pageLinkClass,
-          page.selected ? activeClass : '',
-          disabledClass,
-        ]"
-        tabindex="0"
-        >{{ page.content }}</a
-      >
-      <a
-        v-else
-        :class="[pageLinkClass, page.selected ? activeClass : '']"
-        tabindex="0"
-        @click="handlePageSelected(page.index + 1)"
-        @keyup.enter="handlePageSelected(page.index + 1)"
-        >{{ page.content }}</a
-      >
-    </template>
-    <a
-      v-if="!(lastPageSelected() && hidePrevNext)"
-      :class="[nextLinkClass, lastPageSelected() ? disabledClass : '']"
-      tabindex="0"
-      @click="nextPage()"
-      @keyup.enter="nextPage()"
-      >{{ nextText }}</a
-    >
-    <a
-      v-if="firstLastButton"
-      :class="[pageLinkClass, lastPageSelected() ? disabledClass : '']"
-      tabindex="0"
-      @click="selectLastPage()"
-      @keyup.enter="selectLastPage()"
-      >{{ lastButtonText }}</a
-    >
-  </div>
 </template>
 
 <script>
@@ -166,7 +113,7 @@ export default {
     },
     pageRange: {
       type: Number,
-      default: 3,
+      default: 5,
     },
     marginPages: {
       type: Number,
@@ -174,11 +121,11 @@ export default {
     },
     prevText: {
       type: String,
-      default: 'Prev',
+      default: '<',
     },
     nextText: {
       type: String,
-      default: 'Next',
+      default: '>',
     },
     breakViewText: {
       type: String,
@@ -210,10 +157,6 @@ export default {
     },
     breakViewLinkClass: {
       type: String,
-    },
-    activeClass: {
-      type: String,
-      default: 'active',
     },
     disabledClass: {
       type: String,
@@ -362,8 +305,61 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-a {
-  cursor: pointer;
+<style lang="scss">
+.disabled {
+  a {
+    color: $gray-500 !important;
+  }
+}
+</style>
+
+<style lang="scss" module>
+.pagination {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  .list {
+    display: inline-block;
+    height: 34px;
+    min-width: 34px;
+    line-height: 32px;
+    margin-right: 8px;
+    &:last-child {
+      margin-right: 0;
+    }
+    .breakView {
+      display: block;
+      padding: 0 6px;
+      color: $black;
+      text-decoration: none;
+      text-align: center;
+      background-color: transparent;
+      outline: none;
+      cursor: not-allowed;
+    }
+    .link {
+      transition: 0.3s all;
+      display: block;
+      padding: 0 6px;
+      color: $black;
+      text-decoration: none;
+      text-align: center;
+      background-color: transparent;
+      outline: none;
+      cursor: pointer;
+      border: 1px solid $gray-500;
+      border-radius: 2px;
+      font-size: $font-size-base * 0.9;
+    }
+    &.active,
+    &:hover {
+      .link {
+        transition: 0.3s all;
+        border: 1px solid $primary;
+        color: $primary;
+        font-weight: $font-weight-bold;
+      }
+    }
+  }
 }
 </style>

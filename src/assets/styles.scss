@@ -18,8 +18,8 @@
       // The utility can be disabled with `false`, thus check if the utility is a map first
       // Only proceed if responsive media queries are enabled or if it's the base media query
       @if type-of($utility) ==
-        "map" and
-        (map-get($utility, responsive) or $infix == "")
+        'map' and
+        (map-get($utility, responsive) or $infix == '')
       {
         @include generate-utility($utility, $infix);
       }
@@ -65,3 +65,8 @@
 }
 
 @include make-grid-columns();
+
+.bg-white {
+  background-color: $white;
+  box-shadow: 0 0 3px 0  $gray-300;
+}

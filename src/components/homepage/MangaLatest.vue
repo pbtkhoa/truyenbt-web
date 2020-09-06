@@ -1,49 +1,79 @@
 <template>
-  <div :class="$style.mangaLatest">
-    <div :class="$style.heading"><h2>Truyện mới cập nhật</h2></div>
-    <div :class="$style.mangaContent">
-      <ul class="row p-0 mb-0">
-        <li
-          v-for="manga in mangas"
-          :key="manga._id"
-          :class="[$style.mangaItem, 'col-md-3']"
-        >
-          <a :class="$style.mangaItemImage" href="">
-            <img :src="manga.imagePreview" :alt="manga.name" />
-          </a>
-          <h3 :class="$style.mangaItemTitle">
-            <a href="#">{{ manga.name }}</a>
-          </h3>
-          <div
-            v-for="chapter in manga.chapters"
-            :key="chapter._id"
-            :class="$style.mangaItemChapters"
-          >
-            <div :class="$style.chapterInfo">
-              <a href="#">Chương {{ chapter.number }}</a>
-              <time>29 phut truoc</time>
-            </div>
+  <section :class="['bg-white', $style.mangaLatest]">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div :class="$style.heading"><h2>Truyện mới cập nhật</h2></div>
+          <div :class="$style.mangaContent">
+            <ul :class="['row p-0 mb-0', $style.mangaList]">
+              <li
+                v-for="manga in mangas"
+                :key="manga._id"
+                :class="[$style.mangaItem, 'col-md-3']"
+              >
+                <nuxt-link :class="$style.mangaItemImage" :to="manga.slug">
+                  <img :src="manga.imagePreview" :alt="manga.name" />
+                </nuxt-link>
+                <h3 :class="$style.mangaItemTitle">
+                  <nuxt-link :to="manga.slug">{{ manga.name }}</nuxt-link>
+                </h3>
+                <div
+                  v-for="chapter in manga.chapters"
+                  :key="chapter._id"
+                  :class="$style.mangaItemChapters"
+                >
+                  <div :class="$style.chapterInfo">
+                    <nuxt-link
+                      :to="{
+                        name: 'slug-chapter',
+                        params: { slug: manga.slug, chapter: chapter.number },
+                      }"
+                      >Chương {{ chapter.number }}</nuxt-link
+                    >
+                    <time>{{ diffCurrentTime(chapter.updatedAt) }}</time>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <paginate
+              :page-count="totalPages"
+              :click-handler="onChangePaginate"
+              container-class="text-center"
+            />
           </div>
-        </li>
-      </ul>
-      <Paginate
-        :page-count="20"
-        :prev-text="'Prev'"
-        :next-text="'Next'"
-        :container-class="'className'"
-      />
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import paginate from '~/components/shared/Paginate.vue'
 import Manga from '~/models/Manga'
+import { getDiffDate } from '~/utils/helpers'
 
 export default Vue.extend({
+  components: {
+    paginate,
+  },
+  props: {
+    onChangePaginate: {
+      type: Function,
+      default: () => {},
+    },
+  },
   computed: {
     mangas(): Manga[] {
       return this.$accessor.manga.latest.items
+    },
+    totalPages(): number {
+      return this.$accessor.manga.latest.totalPages
+    },
+  },
+  methods: {
+    diffCurrentTime(updatedAt: string) {
+      return getDiffDate(updatedAt)
     },
   },
 })
@@ -54,7 +84,7 @@ export default Vue.extend({
   .heading h2 {
   }
   .mangaContent {
-    ul {
+    .mangaList {
       list-style: none;
       .mangaItem {
         margin-bottom: 15px;

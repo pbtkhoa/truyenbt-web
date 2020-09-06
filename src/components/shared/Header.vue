@@ -5,7 +5,7 @@
         <img src="/logo.png" alt="TruyenBT" :class="$style.logo" />
         <ul :class="$style.topLinks">
           <li>
-            <a href="#">TRANG CHỦ</a>
+            <nuxt-link to="/">TRANG CHỦ</nuxt-link>
           </li>
           <li>
             <a href="#">LỊCH SỬ</a>
@@ -16,7 +16,7 @@
         </ul>
       </div>
     </div>
-    <div :class="$style.headerBottom">
+    <div :class="['bg-white', $style.headerBottom]">
       <div class="container d-flex">
         <ul :class="$style.bottomLink">
           <li>
@@ -85,7 +85,7 @@
   }
   .headerBottom {
     height: 50px;
-    border-bottom: 1px solid $gray-200;
+    border-bottom: 1px solid $gray-300;
     display: flex;
     .bottomLink {
       padding: 0;
