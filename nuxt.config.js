@@ -34,7 +34,14 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['~/plugins/axios'],
+  plugins: [
+    '~/plugins/axios.ts',
+    '~/plugins/vue-lazyload.ts',
+    {
+      src: '~/plugins/vue-image-lightbox.ts',
+      ssr: false,
+    },
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

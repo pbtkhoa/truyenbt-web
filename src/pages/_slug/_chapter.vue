@@ -37,12 +37,20 @@
     </div>
     <div :class="$style.chapterImages">
       <img
-        v-for="image in mangaChapter.chapter.images"
-        :key="image._id"
-        :src="image.imageUrl"
-        :alt="mangaChapter.name"
+        v-for="(image, index) in media"
+        :key="index"
+        v-lazy="image.src || image.thumb"
+        @click="openGallery(index)"
       />
     </div>
+    <client-only>
+      <light-box
+        ref="lightbox"
+        :show-light-box="false"
+        :site-loading="imageLoading"
+        :media="media"
+      />
+    </client-only>
   </section>
 </template>
 
@@ -53,21 +61,17 @@ import { MangaActions } from '~/store/manga'
 import MangaChapter from '~/models/MangaChapter'
 import Chapter from '~/models/Chapter'
 
+type MediaLightbox = {
+  thumb: string
+  src: string
+}
+
 export default Vue.extend({
   layout: 'dashboard',
   components: {
     VSelect,
   },
-  async asyncData({
-    store,
-    params: { slug, chapter },
-  }): Promise<{
-    slug: string
-    chapter: string
-    chapterList: Chapter[]
-    selectedChapter: Chapter | null
-    mangaChapter: MangaChapter | null
-  }> {
+  async asyncData({ store, params: { slug, chapter } }) {
     const mangaChapter: MangaChapter | null = await store.dispatch(
       MangaActions.GET_DETAIL_MANGA_CHAPTER,
       {
@@ -78,6 +82,7 @@ export default Vue.extend({
 
     let chapterList: Chapter[] = []
     let selectedChapter: Chapter | null = null
+    let media: MediaLightbox[] = []
     if (mangaChapter) {
       chapterList = mangaChapter.chapters
         .slice()
@@ -89,6 +94,13 @@ export default Vue.extend({
 
       selectedChapter =
         chapterList.find((c) => `${c.number}` === `${chapter}`) || null
+
+      media =
+        !!mangaChapter.chapter &&
+        mangaChapter.chapter.images.map((image) => ({
+          src: image.imageUrl,
+          thumb: image.imageUrl,
+        }))
     }
 
     return {
@@ -97,6 +109,7 @@ export default Vue.extend({
       mangaChapter,
       selectedChapter,
       chapterList,
+      media,
     }
   },
   data() {
@@ -105,6 +118,8 @@ export default Vue.extend({
       slug: '' as string,
       mangaChapter: null as MangaChapter | null,
       selectedChapter: null as Chapter | null,
+      media: [] as MediaLightbox[],
+      imageLoading: require('~/assets/loading.gif'),
     }
   },
   computed: {
@@ -133,6 +148,11 @@ export default Vue.extend({
         name: 'slug-chapter',
         params: { slug: this.slug, chapter: chapter.number },
       })
+    },
+  },
+  methods: {
+    openGallery(index: number) {
+      this.$refs.lightbox.showImage(index)
     },
   },
 })
@@ -184,6 +204,8 @@ export default Vue.extend({
     text-align: center;
     img {
       height: auto;
+      display: block;
+      margin: auto;
       max-width: 100%;
     }
   }

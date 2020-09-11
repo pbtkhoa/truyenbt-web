@@ -19,7 +19,7 @@ export default Vue.extend({
     ChapterList,
   },
   async asyncData({ store, params: { slug } }) {
-    await store.dispatch(MangaActions.GET_DETAIL_MANGA, slug)
+    await store.dispatch(MangaActions.GET_DETAIL_MANGAS, slug)
 
     return { slug }
   },

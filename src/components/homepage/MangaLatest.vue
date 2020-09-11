@@ -12,7 +12,7 @@
                 :class="[$style.mangaItem, 'col-md-3']"
               >
                 <nuxt-link :class="$style.mangaItemImage" :to="manga.slug">
-                  <img :src="manga.imagePreview" :alt="manga.name" />
+                  <img v-lazy="manga.imagePreview" />
                 </nuxt-link>
                 <h3 :class="$style.mangaItemTitle">
                   <nuxt-link :to="manga.slug">{{ manga.name }}</nuxt-link>

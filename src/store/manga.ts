@@ -4,8 +4,9 @@ import { removeNamespace } from '~/utils/helpers'
 import MangaChapter from '~/models/MangaChapter'
 
 export const MangaActions = {
-  GET_LATEST_MANGA: 'manga/GET_LATEST_MANGA',
-  GET_DETAIL_MANGA: 'manga/GET_DETAIL_MANGA',
+  GET_HOT_MANGAS: 'manga/GET_HOT_MANGAS',
+  GET_LATEST_MANGAS: 'manga/GET_LATEST_MANGAS',
+  GET_DETAIL_MANGAS: 'manga/GET_DETAIL_MANGAS',
   GET_DETAIL_MANGA_CHAPTER: 'manga/GET_DETAIL_MANGA_CHAPTER',
 }
 
@@ -15,6 +16,7 @@ const _MangaActions = removeNamespace<typeof MangaActions>(
 )
 
 export const state = () => ({
+  hotMangas: [] as Manga[],
   latest: {
     items: [] as Manga[],
     total: 0 as number,
@@ -28,6 +30,7 @@ export const state = () => ({
 export type RootState = ReturnType<typeof state>
 
 export const mutations = mutationTree(state, {
+  setHotMangas: (state, hotMangas: Manga[]) => (state.hotMangas = hotMangas),
   setLatest: (state, mangaLatest: Paginate<Manga>) =>
     (state.latest = mangaLatest),
   setItem: (state, manga: Manga | null) => (state.item = manga),
@@ -38,7 +41,11 @@ export const mutations = mutationTree(state, {
 export const actions = actionTree(
   { state, mutations },
   {
-    async [_MangaActions.GET_LATEST_MANGA](
+    async [_MangaActions.GET_HOT_MANGAS]({ commit }): Promise<void> {
+      const hotMangas: Manga[] = await this.$axios.$get(`manga/hot-mangas`)
+      commit('setHotMangas', hotMangas)
+    },
+    async [_MangaActions.GET_LATEST_MANGAS](
       { commit },
       page: number = 1
     ): Promise<void> {
@@ -47,7 +54,7 @@ export const actions = actionTree(
       )
       commit('setLatest', mangaLatest)
     },
-    async [_MangaActions.GET_DETAIL_MANGA](
+    async [_MangaActions.GET_DETAIL_MANGAS](
       { commit },
       slug: string
     ): Promise<void> {
