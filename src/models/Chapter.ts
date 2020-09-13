@@ -7,7 +7,7 @@ export interface ChapterImage {
 export default interface Chapter {
   _id: string
   number: string
-  view: number
+  viewCount: number
   images: ChapterImage[]
   updatedAt: string
 }

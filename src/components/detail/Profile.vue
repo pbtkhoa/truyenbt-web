@@ -28,7 +28,7 @@
             <h5>Thống kê</h5>
           </div>
           <div :class="$style.contentDetail">
-            <span>{{ manga.view }}</span>
+            <span>{{ manga.viewCount }}</span>
           </div>
         </div>
       </div>

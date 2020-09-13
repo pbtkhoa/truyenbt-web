@@ -11,7 +11,7 @@ export default interface Manga {
   imagePreview: string
   name: string
   otherName: string
-  view: number
+  viewCount: number
   chapters: Chapter[]
   author: Author
   tags: Tag[]
