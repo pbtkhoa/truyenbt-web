@@ -1,7 +1,7 @@
 <template>
   <div :class="['container', $style.profile]">
     <div :class="['bg-white', $style.profileImage]">
-      <img :src="manga.imagePreview" />
+      <img v-lazy="manga.imagePreview" />
     </div>
     <div :class="['bg-white', $style.profileDetail]">
       <h1 :class="$style.profileName">{{ manga.name }}</h1>
@@ -28,7 +28,7 @@
             <h5>Thống kê</h5>
           </div>
           <div :class="$style.contentDetail">
-            <span>{{ manga.viewCount }}</span>
+            <span>{{ manga.viewCount | formatViewCount }}</span>
           </div>
         </div>
       </div>
@@ -69,6 +69,9 @@ export default Vue.extend({
     text-align: center;
     margin-right: 40px;
     padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     img {
       max-width: 190px;
       box-shadow: 0 0 5px 0 $gray-700;

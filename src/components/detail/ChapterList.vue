@@ -13,8 +13,8 @@
           >
             <div :class="$style.chapterNumber">Chương {{ chapter.number }}</div>
             <div :class="$style.chapterInfo">
-              <span>{{ chapter.viewCount }}</span>
-              <time>{{ chapterDate(chapter.updatedAt) }}</time>
+              <span>{{ chapter.viewCount | formatViewCount }}</span>
+              <time>{{ chapter.createdAt | formatDate }}</time>
             </div>
           </nuxt-link>
         </div>
@@ -40,11 +40,6 @@ export default Vue.extend({
         return []
       },
     } as PropOptions<Chapter[]>,
-  },
-  methods: {
-    chapterDate(chapterDate: string): string {
-      return this.$moment(chapterDate).format(DATE_FORMAT.DATE)
-    },
   },
 })
 </script>

@@ -2,9 +2,11 @@ import { mutationTree, actionTree } from 'nuxt-typed-vuex'
 import Manga from '~/models/Manga'
 import { removeNamespace } from '~/utils/helpers'
 import MangaChapter from '~/models/MangaChapter'
+import { MangaSortDate } from '~/utils/constants'
 
 export const MangaActions = {
   GET_HOT_MANGAS: 'manga/GET_HOT_MANGAS',
+  GET_TOP_MANGAS: 'manga/GET_TOP_MANGAS',
   GET_LATEST_MANGAS: 'manga/GET_LATEST_MANGAS',
   GET_DETAIL_MANGAS: 'manga/GET_DETAIL_MANGAS',
   GET_DETAIL_MANGA_CHAPTER: 'manga/GET_DETAIL_MANGA_CHAPTER',
@@ -17,6 +19,7 @@ const _MangaActions = removeNamespace<typeof MangaActions>(
 
 export const state = () => ({
   hotMangas: [] as Manga[],
+  topMangas: {} as { [key: string]: Manga[] },
   latest: {
     items: [] as Manga[],
     total: 0 as number,
@@ -31,6 +34,10 @@ export type RootState = ReturnType<typeof state>
 
 export const mutations = mutationTree(state, {
   setHotMangas: (state, hotMangas: Manga[]) => (state.hotMangas = hotMangas),
+  setTopMangas: (
+    state,
+    { topMangas, dateSort }: { topMangas: Manga[]; dateSort: MangaSortDate }
+  ) => (state.topMangas[dateSort] = topMangas),
   setLatest: (state, mangaLatest: Paginate<Manga>) =>
     (state.latest = mangaLatest),
   setItem: (state, manga: Manga | null) => (state.item = manga),
@@ -44,6 +51,15 @@ export const actions = actionTree(
     async [_MangaActions.GET_HOT_MANGAS]({ commit }): Promise<void> {
       const hotMangas: Manga[] = await this.$axios.$get(`manga/hot-mangas`)
       commit('setHotMangas', hotMangas)
+    },
+    async [_MangaActions.GET_TOP_MANGAS](
+      { commit },
+      dateSort: MangaSortDate
+    ): Promise<void> {
+      const topMangas: Manga[] = await this.$axios.$get(
+        `manga/top-mangas?sort-date=${dateSort}`
+      )
+      commit('setTopMangas', { topMangas, dateSort })
     },
     async [_MangaActions.GET_LATEST_MANGAS](
       { commit },

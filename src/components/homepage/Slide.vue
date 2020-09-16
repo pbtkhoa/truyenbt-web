@@ -3,13 +3,31 @@
     <div v-swiper="swiperOptions" :class="$style.swiper">
       <div class="swiper-wrapper">
         <div
-          :key="manga._id"
           v-for="manga in hotMangas"
+          :key="manga._id"
           :class="['swiper-slide', $style.swiperSlide]"
         >
           <nuxt-link :class="$style.mangaItemImage" :to="manga.slug">
             <img v-lazy="manga.imagePreview" />
           </nuxt-link>
+          <div :class="$style.mangaItemContent">
+            <nuxt-link :to="manga.slug" :class="$style.mangaItemName">{{
+              manga.name
+            }}</nuxt-link>
+            <div :class="$style.mangaItemInfo">
+              <nuxt-link
+                :to="{
+                  name: 'slug-chapter',
+                  params: {
+                    slug: manga.slug,
+                    chapter: getFirstChapterNumber(manga),
+                  },
+                }"
+                >Chapter {{ getFirstChapterNumber(manga) }}</nuxt-link
+              >
+              <time>{{ manga.createdAt | formatDiffDate }}</time>
+            </div>
+          </div>
         </div>
       </div>
       <div class="swiper-button-prev"></div>
@@ -49,6 +67,11 @@ export default Vue.extend({
   computed: {
     hotMangas(): Manga[] {
       return this.$accessor.manga.hotMangas
+    },
+  },
+  methods: {
+    getFirstChapterNumber(manga: Manga): string {
+      return manga.chapters[0] ? manga.chapters[0].number : '-1'
     },
   },
 })
@@ -93,6 +116,55 @@ export default Vue.extend({
       &:after {
         opacity: 0.25;
         transition: 0.4s all;
+      }
+    }
+  }
+
+  .mangaItemContent {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-left: 8px;
+    padding-right: 8px;
+    .mangaItemName {
+      text-align: center;
+      color: $white;
+      font-size: $font-size-base;
+      height: 19px;
+      line-height: 19px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0;
+      text-decoration: none;
+      transition: all 0.2s;
+      &:hover {
+        color: $secondary;
+        transition: all 0.2s;
+      }
+    }
+    .mangaItemInfo {
+      display: flex;
+      justify-content: space-between;
+      a {
+        font-size: $font-size-base * 0.8;
+        color: $white;
+        text-decoration: none;
+        transition: all 0.2s;
+        &:hover {
+          color: $secondary;
+          transition: all 0.2s;
+        }
+      }
+      time {
+        font-size: $font-size-base * 0.8;
+        color: $white;
       }
     }
   }
