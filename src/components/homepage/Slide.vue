@@ -25,7 +25,7 @@
                 }"
                 >Chapter {{ getFirstChapterNumber(manga) }}</nuxt-link
               >
-              <time>{{ manga.createdAt | formatDiffDate }}</time>
+              <time>{{ manga.publishedAt | formatDiffDate }}</time>
             </div>
           </div>
         </div>

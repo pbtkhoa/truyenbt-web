@@ -27,7 +27,7 @@
                 }"
                 >Chương {{ chapter.number }}</nuxt-link
               >
-              <time>{{ chapter.createdAt | formatDiffDate }}</time>
+              <time>{{ chapter.publishedAt | formatDiffDate }}</time>
             </div>
           </div>
         </li>

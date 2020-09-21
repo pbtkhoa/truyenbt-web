@@ -15,6 +15,5 @@ export default interface Manga {
   chapters: Chapter[]
   author: Author
   tags: Tag[]
-  createdAt: string
-  updatedAt: string
+  publishedAt: string
 }

@@ -35,7 +35,8 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
-    '~/plugins/axios.ts',
+    '~/plugins/vue-filter.ts',
+    '~/plugins/vue-axios.ts',
     '~/plugins/vue-lazyload.ts',
     {
       src: '~/plugins/vue-image-lightbox.ts',
@@ -54,7 +55,6 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
     'nuxt-typed-vuex',
-    '@nuxtjs/moment',
   ],
   /*
    ** Nuxt.js modules

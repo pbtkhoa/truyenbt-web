@@ -14,7 +14,7 @@
             <div :class="$style.chapterNumber">Chương {{ chapter.number }}</div>
             <div :class="$style.chapterInfo">
               <span>{{ chapter.viewCount | formatViewCount }}</span>
-              <time>{{ chapter.createdAt | formatDate }}</time>
+              <time>{{ chapter.publishedAt | formatDate }}</time>
             </div>
           </nuxt-link>
         </div>

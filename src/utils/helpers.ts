@@ -1,5 +1,7 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
+import duration, { Duration } from 'dayjs/plugin/duration'
 import { MangaStatus } from '~/utils/constants'
+dayjs.extend(duration)
 
 type Type = { [key: string]: string }
 
@@ -30,14 +32,12 @@ export function getMangaStatus(status: MangaStatus) {
 }
 
 export function getDiffDate(chooseDate: string) {
-  const duration: moment.Duration = moment.duration(
-    moment().diff(moment(chooseDate))
-  )
-  const years: number = duration.years()
-  const months: number = duration.months()
-  const days: number = duration.days()
-  const hours: number = duration.hours()
-  const minutes: number = duration.minutes()
+  const dateDuration: Duration = dayjs.duration(dayjs().diff(chooseDate))
+  const years: number = dateDuration.years()
+  const months: number = dateDuration.months()
+  const days: number = dateDuration.days()
+  const hours: number = dateDuration.hours()
+  const minutes: number = dateDuration.minutes()
 
   if (years > 1) {
     return `${years} năm trước`

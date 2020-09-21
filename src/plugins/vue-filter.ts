@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { getDiffDate } from '~/utils/helpers'
 import { DATE_FORMAT } from '~/utils/constants'
 
@@ -17,5 +17,5 @@ Vue.filter('formatDiffDate', function (date: string) {
 
 Vue.filter('formatDate', function (date: string) {
   if (!date) return ''
-  return moment(date).format(DATE_FORMAT.DATE)
+  return dayjs(date, DATE_FORMAT.DATE)
 })

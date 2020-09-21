@@ -6,6 +6,5 @@ export default interface MangaChapter {
   name: string
   chapter: Chapter
   chapters: Chapter[]
-  createdAt: string
-  updatedAt: string
+  publishedAt: string
 }
