@@ -38,6 +38,7 @@ export function getDiffDate(chooseDate: string) {
   const days: number = dateDuration.days()
   const hours: number = dateDuration.hours()
   const minutes: number = dateDuration.minutes()
+  const seconds: number = dateDuration.seconds()
 
   if (years > 1) {
     return `${years} năm trước`
@@ -47,7 +48,9 @@ export function getDiffDate(chooseDate: string) {
     return `${days} ngày trước`
   } else if (hours > 1) {
     return `${hours} giờ trước`
+  } else if (minutes > 1) {
+    return `${minutes} phút trước`
   }
 
-  return `${minutes} phút trước`
+  return `${seconds} giây trước`
 }
