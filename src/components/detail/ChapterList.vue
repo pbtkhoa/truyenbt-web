@@ -26,7 +26,6 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import Chapter from '~/models/Chapter'
-import { DATE_FORMAT } from '~/utils/constants'
 
 export default Vue.extend({
   props: {

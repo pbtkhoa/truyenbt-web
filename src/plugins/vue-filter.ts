@@ -17,5 +17,5 @@ Vue.filter('formatDiffDate', function (date: string) {
 
 Vue.filter('formatDate', function (date: string) {
   if (!date) return ''
-  return dayjs(date, DATE_FORMAT.DATE)
+  return dayjs(date).format(DATE_FORMAT.DATE)
 })
