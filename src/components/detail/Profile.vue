@@ -20,7 +20,7 @@
             <h5>Tình trạng</h5>
           </div>
           <div :class="$style.contentDetail">
-            <span>{{ mangaStatus }}</span>
+            <span>{{ manga.status | formatMangaStatus }}</span>
           </div>
         </div>
         <div :class="$style.contentItem">
@@ -44,7 +44,6 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import Manga from '~/models/Manga'
-import { getMangaStatus } from '~/utils/helpers'
 
 export default Vue.extend({
   props: {
@@ -52,11 +51,6 @@ export default Vue.extend({
       type: Object,
       default: null,
     } as PropOptions<Manga>,
-  },
-  computed: {
-    mangaStatus(): string {
-      return getMangaStatus(this.$props.manga.status)
-    },
   },
 })
 </script>

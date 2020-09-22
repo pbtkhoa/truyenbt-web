@@ -3,9 +3,29 @@
     <div :class="$style.mangaContent">
       <ul :class="['row p-0 mb-0', $style.mangaList]">
         <li v-for="manga in mangas" :key="manga._id" :class="[$style.mangaItem, 'col-md-3']">
-          <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
-            <img v-lazy="manga.imagePreview" />
-          </nuxt-link>
+          <v-popover trigger="hover" placement="right">
+            <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
+              <img v-lazy="manga.imagePreview" />
+            </nuxt-link>
+            <template slot="popover">
+              <div :class="$style.moreInfo">
+                <h5 :class="$style.name">{{ manga.name }}</h5>
+                <h5 v-if="manga.otherName" :class="$style.otherName">Tên khác: {{ manga.otherName }}</h5>
+                <p :class="$style.info">Tình trạng: {{ manga.status | formatMangaStatus }}</p>
+                <p :class="$style.info">Lượt xem: {{ manga.viewCount | formatViewCount }}</p>
+                <div :class="$style.tags">
+                  <nuxt-link
+                    v-for="tag in manga.tags"
+                    :key="tag._id"
+                    :to="{ name: 'tim-truyen-tag', params: { tag: tag.slug } }"
+                  >
+                    {{ tag.name }}
+                  </nuxt-link>
+                </div>
+                <p :class="$style.description">{{ manga.description }}</p>
+              </div>
+            </template>
+          </v-popover>
           <h3 :class="$style.mangaItemTitle">
             <nuxt-link :to="{ name: 'slug', params: { slug: manga.slug } }">{{ manga.name }}</nuxt-link>
           </h3>
@@ -66,7 +86,6 @@ export default Vue.extend({
         position: relative;
         display: block;
         width: 100%;
-        margin-bottom: 10px;
         border: 1px solid $gray-400;
         border-radius: 5px;
         overflow: hidden;
@@ -135,6 +154,51 @@ export default Vue.extend({
         }
       }
     }
+  }
+}
+.moreInfo {
+  max-width: 330px;
+  .name {
+    font-size: $font-size-base * 0.7;
+    color: $primary;
+  }
+  .otherName {
+    font-size: $font-size-base * 0.8;
+    color: $gray-700;
+  }
+  .info {
+    font-size: $font-size-base * 0.8;
+    color: $black;
+    margin-bottom: 0;
+  }
+  .tags {
+    margin: 6px 0 0 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    a {
+      margin-bottom: 3px;
+      padding: 2px 4px;
+      border-radius: 3px;
+      border: 1px solid $primary;
+      color: $primary;
+      background-color: transparent;
+      text-decoration: none;
+      margin-right: 5px;
+      transition: 0.2s all;
+      font-size: $font-size-base * 0.7;
+      &:hover {
+        transition: 0.2s all;
+        color: $white;
+        background-color: $primary;
+      }
+    }
+  }
+  .description {
+    font-size: $font-size-base * 0.8;
+    color: $black;
+    margin-bottom: 0;
   }
 }
 </style>

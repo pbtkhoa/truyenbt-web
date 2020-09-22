@@ -36,6 +36,7 @@ export default {
    */
   plugins: [
     '~/plugins/vue-filter.ts',
+    '~/plugins/vue-tooltip.ts',
     '~/plugins/vue-axios.ts',
     '~/plugins/vue-lazyload.ts',
     {
@@ -51,11 +52,7 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    '@nuxt/typescript-build',
-    '@nuxtjs/style-resources',
-    'nuxt-typed-vuex',
-  ],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/style-resources', 'nuxt-typed-vuex'],
   /*
    ** Nuxt.js modules
    */
