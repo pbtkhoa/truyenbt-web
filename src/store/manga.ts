@@ -67,8 +67,15 @@ export const actions = actionTree(
 
       return mangaChapter
     },
-    async [_MangaActions.SEARCH_MANGAS]({ commit }, { page, tag }): Promise<void> {
-      const mangas: Paginate<Manga> = await this.$axios.$get(`manga/search-mangas?limit=12&page=${page}&tags=${tag}`)
+    async [_MangaActions.SEARCH_MANGAS]({ commit }, { page, tag, status }): Promise<void> {
+      const mangas: Paginate<Manga> = await this.$axios.$get(`manga/search-mangas`, {
+        params: {
+          page,
+          status,
+          tags: tag,
+          limit: 12,
+        },
+      })
       commit('setPaginateList', mangas)
     },
   }

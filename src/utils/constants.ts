@@ -1,6 +1,6 @@
 export enum MangaStatus {
-  CONTINUE = 0,
-  COMPLETE = 1,
+  CONTINUE = '0',
+  COMPLETE = '1',
 }
 
 export enum MangaSortDate {

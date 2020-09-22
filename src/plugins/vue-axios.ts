@@ -2,13 +2,7 @@ import { NuxtAxiosInstance } from '@nuxtjs/axios'
 import { NuxtCookies } from 'cookie-universal-nuxt'
 import { suid } from 'rand-token'
 
-export default function ({
-  $axios,
-  $cookies,
-}: {
-  $axios: NuxtAxiosInstance
-  $cookies: NuxtCookies
-}) {
+export default function ({ $axios, $cookies }: { $axios: NuxtAxiosInstance; $cookies: NuxtCookies }) {
   let accessCountToken: string = $cookies.get('access-count-token')
   if (!accessCountToken) {
     accessCountToken = suid(16)
@@ -19,7 +13,7 @@ export default function ({
   }
 
   $axios.onRequest((config) => {
-    console.log(`[${config.method}]: ${config.baseURL}/${config.url}`)
+    console.log(`[${config.method}]: ${config.baseURL}/${config.url}`, config.params)
   })
   $axios.onResponse((response) => {
     return response.data

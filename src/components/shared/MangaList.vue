@@ -3,7 +3,7 @@
     <div :class="$style.mangaContent">
       <ul :class="['row p-0 mb-0', $style.mangaList]">
         <li v-for="manga in mangas" :key="manga._id" :class="[$style.mangaItem, 'col-md-3']">
-          <v-popover trigger="hover" placement="right">
+          <v-popover trigger="hover" placement="right" :delay="{ show: 100, hide: 100 }">
             <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
               <img v-lazy="manga.imagePreview" />
             </nuxt-link>
@@ -17,7 +17,7 @@
                   <nuxt-link
                     v-for="tag in manga.tags"
                     :key="tag._id"
-                    :to="{ name: 'tim-truyen-tag', params: { tag: tag.slug } }"
+                    :to="{ name: 'tim-truyen', query: { tag: tag.slug } }"
                   >
                     {{ tag.name }}
                   </nuxt-link>
@@ -36,14 +36,20 @@
                   name: 'slug-chapter',
                   params: { slug: manga.slug, chapter: chapter.number },
                 }"
-                >Chương {{ chapter.number }}</nuxt-link
               >
+                Chương {{ chapter.number }}
+              </nuxt-link>
               <time>{{ chapter.publishedAt | formatDiffDate }}</time>
             </div>
           </div>
         </li>
       </ul>
-      <paginate :page-count="totalPages" :click-handler="onChangePaginate" container-class="text-center" />
+      <paginate
+        v-if="totalPages > 0"
+        :page-count="totalPages"
+        :click-handler="onChangePaginate"
+        container-class="text-center"
+      />
     </div>
   </div>
 </template>

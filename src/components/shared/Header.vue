@@ -76,7 +76,7 @@ export default Vue.extend({
       if (navItem.id === 'tag') {
         navItem.children = this.$accessor.tag.items.map((i: Tag) => ({
           id: i._id,
-          to: { name: 'tim-truyen-tag', params: { tag: i.slug } },
+          to: { name: 'tim-truyen', query: { tag: i.slug } },
           name: i.name,
         }))
       }

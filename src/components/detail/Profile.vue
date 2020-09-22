@@ -33,7 +33,7 @@
         </div>
       </div>
       <div :class="$style.profileTags">
-        <nuxt-link v-for="tag in manga.tags" :key="tag._id" :to="{ name: 'tim-truyen-tag', params: { tag: tag.slug } }">
+        <nuxt-link v-for="tag in manga.tags" :key="tag._id" :to="{ name: 'tim-truyen', query: { tag: tag.slug } }">
           {{ tag.name }}
         </nuxt-link>
       </div>
