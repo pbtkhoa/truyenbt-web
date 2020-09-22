@@ -86,7 +86,6 @@ export default Vue.extend({
         position: relative;
         display: block;
         width: 100%;
-        border: 1px solid $gray-400;
         border-radius: 5px;
         overflow: hidden;
         img {
@@ -154,6 +153,11 @@ export default Vue.extend({
         }
       }
     }
+  }
+}
+.popOver {
+  .trigger {
+    width: 100%;
   }
 }
 .moreInfo {

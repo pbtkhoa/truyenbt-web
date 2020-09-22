@@ -68,6 +68,12 @@
   box-shadow: 0 0 3px 0 $gray-300;
 }
 
+.v-popover {
+  .trigger {
+    width: 100%;
+  }
+}
+
 .tooltip {
   display: block !important;
   z-index: 10000;
