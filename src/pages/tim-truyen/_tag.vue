@@ -1,33 +1,34 @@
 <template>
-  <section :class="['bg-white']">
+  <div id="search-manga">
     <div class="container">
       <div class="row">
         <div class="col-md-8">
-          <div><h2>Truyện mới cập nhật</h2></div>
           <manga-list :on-change-paginate="onChangePaginate" :mangas="mangas" :total-pages="totalPages" />
         </div>
-        <top-manga />
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import TopManga from './TopManga/index.vue'
 import MangaList from '~/components/shared/MangaList.vue'
+import { MangaActions } from '~/store/manga'
 import Manga from '~/models/Manga'
 
 export default Vue.extend({
+  layout: 'dashboard',
   components: {
     MangaList,
-    TopManga,
   },
-  props: {
-    onChangePaginate: {
-      type: Function,
-      default: () => {},
-    },
+  async asyncData({ store, params: { tag } }) {
+    await store.dispatch(MangaActions.SEARCH_MANGAS, { page: 1, tag })
+    return { tag }
+  },
+  data() {
+    return {
+      tag: '' as string,
+    }
   },
   computed: {
     mangas(): Manga[] {
@@ -37,7 +38,10 @@ export default Vue.extend({
       return this.$accessor.manga.paginateList.totalPages
     },
   },
+  methods: {
+    async onChangePaginate(page: number) {
+      await this.$store.dispatch(MangaActions.SEARCH_MANGAS, { page, tag: this.tag })
+    },
+  },
 })
 </script>
-
-<style module lang="scss"></style>

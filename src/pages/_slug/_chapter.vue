@@ -2,17 +2,10 @@
   <section :class="['bg-white', $style.chapterDetail]">
     <div :class="['position-sticky', $style.chapterInfo]">
       <div class="container">
-        <h1 :class="$style.chapterName">
-          {{ mangaChapter.name }} - Chap {{ mangaChapter.chapter.number }}
-        </h1>
+        <h1 :class="$style.chapterName">{{ mangaChapter.name }} - Chap {{ mangaChapter.chapter.number }}</h1>
         <div :class="$style.chapterPaginate">
           <div :class="$style.selectView">
-            <v-select
-              v-model="selectedChapter"
-              :options="chapterList"
-              :clearable="false"
-              label="label"
-            ></v-select>
+            <v-select v-model="selectedChapter" :options="chapterList" :clearable="false" label="label"></v-select>
           </div>
           <div :class="$style.navigate">
             <nuxt-link
@@ -21,35 +14,27 @@
                 name: 'slug-chapter',
                 params: { slug, chapter: prevChapter.number },
               }"
-              >Chap trước</nuxt-link
             >
+              Chap trước
+            </nuxt-link>
             <nuxt-link
               v-if="nextChapter"
               :to="{
                 name: 'slug-chapter',
                 params: { slug, chapter: nextChapter.number },
               }"
-              >Chap sau</nuxt-link
             >
+              Chap sau
+            </nuxt-link>
           </div>
         </div>
       </div>
     </div>
     <div :class="$style.chapterImages">
-      <img
-        v-for="(image, index) in media"
-        :key="index"
-        v-lazy="image.src || image.thumb"
-        @click="openGallery(index)"
-      />
+      <img v-for="(image, index) in media" :key="index" v-lazy="image.src || image.thumb" @click="openGallery(index)" />
     </div>
     <client-only>
-      <light-box
-        ref="lightbox"
-        :show-light-box="false"
-        :site-loading="imageLoading"
-        :media="media"
-      />
+      <light-box ref="lightbox" :show-light-box="false" :site-loading="imageLoading" :media="media" />
     </client-only>
   </section>
 </template>
@@ -72,13 +57,10 @@ export default Vue.extend({
     VSelect,
   },
   async asyncData({ store, params: { slug, chapter } }) {
-    const mangaChapter: MangaChapter | null = await store.dispatch(
-      MangaActions.GET_DETAIL_MANGA_CHAPTER,
-      {
-        slug,
-        chapter,
-      }
-    )
+    const mangaChapter: MangaChapter | null = await store.dispatch(MangaActions.GET_DETAIL_MANGA_CHAPTER, {
+      slug,
+      chapter,
+    })
 
     let chapterList: Chapter[] = []
     let selectedChapter: Chapter | null = null
@@ -92,8 +74,7 @@ export default Vue.extend({
           label: `Chương ${chapter.number}`,
         }))
 
-      selectedChapter =
-        chapterList.find((c) => `${c.number}` === `${chapter}`) || null
+      selectedChapter = chapterList.find((c) => `${c.number}` === `${chapter}`) || null
 
       media =
         !!mangaChapter.chapter &&
@@ -125,18 +106,14 @@ export default Vue.extend({
   computed: {
     prevChapter(): Chapter | null {
       const currentChapterIdx: number = this.selectedChapter
-        ? this.chapterList.findIndex(
-            (chapter) => chapter.number === this.selectedChapter!.number
-          )
+        ? this.chapterList.findIndex((chapter) => chapter.number === this.selectedChapter!.number)
         : -1
 
       return this.chapterList[currentChapterIdx - 1]
     },
     nextChapter(): Chapter | null {
       const currentChapterIdx: number = this.selectedChapter
-        ? this.chapterList.findIndex(
-            (chapter) => chapter.number === this.selectedChapter!.number
-          )
+        ? this.chapterList.findIndex((chapter) => chapter.number === this.selectedChapter!.number)
         : -1
 
       return this.chapterList[currentChapterIdx + 1]

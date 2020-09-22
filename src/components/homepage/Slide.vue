@@ -2,16 +2,12 @@
   <section class="container">
     <div v-swiper="swiperOptions" :class="$style.swiper">
       <div class="swiper-wrapper">
-        <div
-          v-for="manga in hotMangas"
-          :key="manga._id"
-          :class="['swiper-slide', $style.swiperSlide]"
-        >
-          <nuxt-link :class="$style.mangaItemImage" :to="manga.slug">
+        <div v-for="manga in hotMangas" :key="manga._id" :class="['swiper-slide', $style.swiperSlide]">
+          <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
             <img v-lazy="manga.imagePreview" />
           </nuxt-link>
           <div :class="$style.mangaItemContent">
-            <nuxt-link :to="manga.slug" :class="$style.mangaItemName">{{
+            <nuxt-link :to="{ name: 'slug', params: { slug: manga.slug } }" :class="$style.mangaItemName">{{
               manga.name
             }}</nuxt-link>
             <div :class="$style.mangaItemInfo">

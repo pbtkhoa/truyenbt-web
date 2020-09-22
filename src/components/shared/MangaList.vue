@@ -1,24 +1,15 @@
 <template>
-  <div class="col-md-8">
-    <div :class="$style.heading"><h2>Truyện mới cập nhật</h2></div>
+  <div>
     <div :class="$style.mangaContent">
       <ul :class="['row p-0 mb-0', $style.mangaList]">
-        <li
-          v-for="manga in mangas"
-          :key="manga._id"
-          :class="[$style.mangaItem, 'col-md-3']"
-        >
-          <nuxt-link :class="$style.mangaItemImage" :to="manga.slug">
+        <li v-for="manga in mangas" :key="manga._id" :class="[$style.mangaItem, 'col-md-3']">
+          <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
             <img v-lazy="manga.imagePreview" />
           </nuxt-link>
           <h3 :class="$style.mangaItemTitle">
-            <nuxt-link :to="manga.slug">{{ manga.name }}</nuxt-link>
+            <nuxt-link :to="{ name: 'slug', params: { slug: manga.slug } }">{{ manga.name }}</nuxt-link>
           </h3>
-          <div
-            v-for="chapter in manga.chapters"
-            :key="chapter._id"
-            :class="$style.mangaItemChapters"
-          >
+          <div v-for="chapter in manga.chapters" :key="chapter._id" :class="$style.mangaItemChapters">
             <div :class="$style.chapterInfo">
               <nuxt-link
                 :to="{
@@ -32,17 +23,13 @@
           </div>
         </li>
       </ul>
-      <paginate
-        :page-count="totalPages"
-        :click-handler="onChangePaginate"
-        container-class="text-center"
-      />
+      <paginate :page-count="totalPages" :click-handler="onChangePaginate" container-class="text-center" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
 import paginate from '~/components/shared/Paginate.vue'
 import Manga from '~/models/Manga'
 
@@ -55,21 +42,21 @@ export default Vue.extend({
       type: Function,
       default: () => {},
     },
-  },
-  computed: {
-    mangas(): Manga[] {
-      return this.$accessor.manga.latest.items
-    },
-    totalPages(): number {
-      return this.$accessor.manga.latest.totalPages
+    mangas: {
+      type: Array,
+      default() {
+        return []
+      },
+    } as PropOptions<Manga[]>,
+    totalPages: {
+      type: Number,
+      default: 0,
     },
   },
 })
 </script>
 
 <style module lang="scss">
-.heading h2 {
-}
 .mangaContent {
   .mangaList {
     list-style: none;

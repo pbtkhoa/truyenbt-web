@@ -1,17 +1,13 @@
 <template>
   <div>
-    <div
-      v-for="(manga, index) in mangas"
-      :key="manga._id"
-      :class="$style.mangaItem"
-    >
+    <div v-for="(manga, index) in mangas" :key="manga._id" :class="$style.mangaItem">
       <span :class="$style.mangaTopNumber">{{ index + 1 }}</span>
-      <nuxt-link :class="$style.mangaItemImage" :to="manga.slug">
+      <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
         <img v-lazy="manga.imagePreview" />
       </nuxt-link>
       <div :class="$style.mangaItemContent">
         <h5>
-          <nuxt-link :to="manga.slug">{{ manga.name }}</nuxt-link>
+          <nuxt-link :to="{ name: 'slug', params: { slug: manga.slug } }">{{ manga.name }}</nuxt-link>
         </h5>
         <div class="d-flex justify-content-between">
           <nuxt-link
