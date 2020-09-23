@@ -67,11 +67,12 @@ export const actions = actionTree(
 
       return mangaChapter
     },
-    async [_MangaActions.SEARCH_MANGAS]({ commit }, { page, tag, status }): Promise<void> {
+    async [_MangaActions.SEARCH_MANGAS]({ commit }, { page, tag, status, sort }): Promise<void> {
       const mangas: Paginate<Manga> = await this.$axios.$get(`manga/search-mangas`, {
         params: {
           page,
           status,
+          sort,
           tags: tag,
           limit: 12,
         },
