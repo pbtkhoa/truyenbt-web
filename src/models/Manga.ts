@@ -12,6 +12,8 @@ export default interface Manga {
   name: string
   otherName: string
   viewCount: number
+  like: number
+  follow: number
   chapters: Chapter[]
   author: Author
   tags: Tag[]

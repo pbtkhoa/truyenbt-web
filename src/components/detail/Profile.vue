@@ -28,7 +28,15 @@
             <h5>Thống kê</h5>
           </div>
           <div :class="$style.contentDetail">
-            <span>{{ manga.viewCount | formatViewCount }}</span>
+            <span :class="$style.countInfo">
+              <font-awesome-icon icon="thumbs-up" :class="$style.countIcon" />{{ manga.like | formatCount }}
+            </span>
+            <span :class="$style.countInfo">
+              <font-awesome-icon icon="heart" :class="$style.countIcon" />{{ manga.follow | formatCount }}
+            </span>
+            <span :class="$style.countInfo">
+              <font-awesome-icon icon="eye" :class="$style.countIcon" />{{ manga.viewCount | formatCount }}
+            </span>
           </div>
         </div>
       </div>
@@ -36,6 +44,12 @@
         <nuxt-link v-for="tag in manga.tags" :key="tag._id" :to="{ name: 'tim-truyen', query: { tag: tag.slug } }">
           {{ tag.name }}
         </nuxt-link>
+      </div>
+      <div :class="[$style.profileAction, 'd-flex']">
+        <button :class="[$style.actionBtn, $style.follow]"><font-awesome-icon icon="heart" />Theo dõi</button>
+        <button :class="[$style.actionBtn, $style.like]" :disabled="isLikeProcessing" @click="onClickLikeManga">
+          <font-awesome-icon icon="thumbs-up" />Thích
+        </button>
       </div>
     </div>
   </div>
@@ -47,10 +61,18 @@ import Manga from '~/models/Manga'
 
 export default Vue.extend({
   props: {
+    isLikeProcessing: {
+      type: Boolean,
+      default: false,
+    },
     manga: {
       type: Object,
       default: null,
     } as PropOptions<Manga>,
+    onClickLikeManga: {
+      type: Function,
+      default: () => {},
+    },
   },
 })
 </script>
@@ -97,8 +119,13 @@ export default Vue.extend({
         }
 
         .contentDetail {
-          span {
+          .countInfo {
             font-size: $font-size-base;
+            margin-right: 30px;
+            .countIcon {
+              font-size: $font-size-base * 0.9;
+              margin-right: 8px;
+            }
           }
 
           a {
@@ -125,12 +152,45 @@ export default Vue.extend({
         color: $primary;
         background-color: transparent;
         text-decoration: none;
-        margin-right: 15px;
+        margin-right: 10px;
         transition: 0.2s all;
         &:hover {
           transition: 0.2s all;
           color: $white;
           background-color: $primary;
+        }
+      }
+    }
+    .profileAction {
+      .actionBtn {
+        padding: 5px 12px;
+        height: 40px;
+        border-radius: 20px;
+        min-width: 150px;
+        color: $white;
+        text-decoration: none;
+        margin-right: 10px;
+        transition: 0.2s all;
+        outline: none;
+        &:hover {
+          transition: 0.2s all;
+          opacity: 0.6;
+        }
+        &:disabled {
+          transition: 0.2s all;
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        > * {
+          margin-right: 12px;
+        }
+        &.follow {
+          background-color: $orange;
+          border: 1px solid $orange;
+        }
+        &.like {
+          background-color: $blue;
+          border: 1px solid $blue;
         }
       }
     }

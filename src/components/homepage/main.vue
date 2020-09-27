@@ -2,8 +2,8 @@
   <section :class="['bg-white']">
     <div class="container">
       <div class="row">
-        <div class="col-md-8">
-          <div><h2>Truyện mới cập nhật</h2></div>
+        <div class="col-md-8 pt-4">
+          <h2 :class="$style.title">TRUYỆN MỚI CẬP NHẬT</h2>
           <manga-list :on-change-paginate="onChangePaginate" :mangas="mangas" :total-pages="totalPages" />
         </div>
         <top-manga />
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import TopManga from './TopManga/index.vue'
+import TopManga from '~/components/shared/TopManga/index.vue'
 import MangaList from '~/components/shared/MangaList.vue'
 import Manga from '~/models/Manga'
 
@@ -40,4 +40,10 @@ export default Vue.extend({
 })
 </script>
 
-<style module lang="scss"></style>
+<style module lang="scss">
+.title {
+  font-size: $h5-font-size * 1.1;
+  color: $gray-900;
+  text-transform: uppercase;
+}
+</style>

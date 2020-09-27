@@ -23,7 +23,7 @@
             Chapter {{ getFirstChapterNumber(manga) }}
           </nuxt-link>
           <span :class="$style.mangaItemView">
-            {{ manga.viewCount | formatViewCount }}
+            {{ manga.viewCount | formatCount }}
           </span>
         </div>
       </div>

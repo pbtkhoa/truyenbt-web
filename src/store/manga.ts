@@ -3,6 +3,8 @@ import Manga from '~/models/Manga'
 import { removeNamespace } from '~/utils/helpers'
 import MangaChapter from '~/models/MangaChapter'
 import { MangaSortDate } from '~/utils/constants'
+import MangaHistory from '~/models/MangaHistory'
+import localStorage from '~/utils/localStorage'
 
 export const MangaActions = {
   GET_HOT_MANGAS: 'manga/GET_HOT_MANGAS',
@@ -11,6 +13,8 @@ export const MangaActions = {
   GET_DETAIL_MANGAS: 'manga/GET_DETAIL_MANGAS',
   GET_DETAIL_MANGA_CHAPTER: 'manga/GET_DETAIL_MANGA_CHAPTER',
   SEARCH_MANGAS: 'manga/SEARCH_MANGAS',
+  GET_HISTORIES_MANGA: 'manga/GET_HISTORIES_MANGA',
+  INC_LIKE_MANGA: 'manga/INC_LIKE_MANGA',
 }
 
 const _MangaActions = removeNamespace<typeof MangaActions>('manga/', MangaActions)
@@ -26,6 +30,7 @@ export const state = () => ({
   },
   item: null as Manga | null,
   mangaChapter: null as MangaChapter | null,
+  historiesManga: [] as MangaHistory[],
 })
 
 export type RootState = ReturnType<typeof state>
@@ -37,6 +42,12 @@ export const mutations = mutationTree(state, {
   setPaginateList: (state, paginateList: Paginate<Manga>) => (state.paginateList = paginateList),
   setItem: (state, manga: Manga | null) => (state.item = manga),
   setMangaChapter: (state, mangaChapter: MangaChapter | null) => (state.mangaChapter = mangaChapter),
+  setHistoriesManga: (state, historiesManga: MangaHistory[]) => (state.historiesManga = historiesManga),
+  incMangaLike: (state) => {
+    if (state.item) {
+      state.item = { ...state.item, like: state.item.like + 1 }
+    }
+  },
 })
 
 export const actions = actionTree(
@@ -78,6 +89,14 @@ export const actions = actionTree(
         },
       })
       commit('setPaginateList', mangas)
+    },
+    [_MangaActions.GET_HISTORIES_MANGA]({ commit }): void {
+      const historiesManga: MangaHistory[] = localStorage.getHistoriesManga()
+      commit('setHistoriesManga', historiesManga)
+    },
+    async [_MangaActions.INC_LIKE_MANGA]({ commit }, slug: string): Promise<void> {
+      await this.$axios.$put(`manga/${slug}/like`)
+      commit('incMangaLike')
     },
   }
 )

@@ -15,8 +15,6 @@ export default function ({ $axios, $cookies }: { $axios: NuxtAxiosInstance; $coo
   $axios.onRequest((config) => {
     console.log(`[${config.method}]: ${config.baseURL}/${config.url}`, config.params)
   })
-  $axios.onResponse((response) => {
-    return response.data
-  })
+  $axios.onResponse(({ data }) => data)
   $axios.setHeader('access-count-token', accessCountToken)
 }

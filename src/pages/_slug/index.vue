@@ -1,6 +1,6 @@
 <template>
   <section :class="$style.detail">
-    <profile :manga="manga" />
+    <profile :manga="manga" :on-click-like-manga="onClickLikeManga" :is-like-processing="isLikeProcessing" />
     <chapter-list :chapters="manga.chapters" :slug="slug" />
   </section>
 </template>
@@ -23,9 +23,22 @@ export default Vue.extend({
 
     return { slug }
   },
+  data() {
+    return {
+      slug: '',
+      isLikeProcessing: false,
+    }
+  },
   computed: {
     manga(): Manga | null {
       return this.$accessor.manga.item
+    },
+  },
+  methods: {
+    async onClickLikeManga() {
+      this.isLikeProcessing = true
+      await this.$store.dispatch(MangaActions.INC_LIKE_MANGA, this.slug)
+      this.isLikeProcessing = false
     },
   },
 })

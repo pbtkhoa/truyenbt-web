@@ -3,7 +3,7 @@
     <div :class="$style.mangaContent">
       <ul :class="['row p-0 mb-0', $style.mangaList]">
         <li v-for="manga in mangas" :key="manga._id" :class="[$style.mangaItem, 'col-md-3']">
-          <v-popover trigger="hover" placement="right" :delay="{ show: 100, hide: 100 }">
+          <v-popover trigger="hover" placement="right" :delay="{ show: 100, hide: 200 }">
             <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
               <img v-lazy="manga.imagePreview" />
             </nuxt-link>
@@ -12,7 +12,7 @@
                 <h5 :class="$style.name">{{ manga.name }}</h5>
                 <h5 v-if="manga.otherName" :class="$style.otherName">Tên khác: {{ manga.otherName }}</h5>
                 <p :class="$style.info">Tình trạng: {{ manga.status | formatMangaStatus }}</p>
-                <p :class="$style.info">Lượt xem: {{ manga.viewCount | formatViewCount }}</p>
+                <p :class="$style.info">Lượt xem: {{ manga.viewCount | formatCount }}</p>
                 <div :class="$style.tags">
                   <nuxt-link
                     v-for="tag in manga.tags"
@@ -94,6 +94,7 @@ export default Vue.extend({
         width: 100%;
         border-radius: 5px;
         overflow: hidden;
+        margin-bottom: 6px;
         img {
           transition: 0.4s all;
           width: 100%;
@@ -122,6 +123,7 @@ export default Vue.extend({
       }
       .mangaItemTitle {
         text-align: center;
+        font-weight: 600;
         font-size: $font-size-base * 0.9;
         line-height: $font-size-base * 1.1;
         height: $font-size-base * 2.2;

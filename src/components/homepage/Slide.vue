@@ -75,6 +75,7 @@ export default Vue.extend({
 
 <style lang="scss" module>
 .swiper {
+  padding: 10px 0;
   .swiperSlide {
     width: 190px;
     height: 247px;

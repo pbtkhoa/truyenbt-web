@@ -45,6 +45,7 @@ import VSelect from 'vue-select'
 import { MangaActions } from '~/store/manga'
 import MangaChapter from '~/models/MangaChapter'
 import Chapter from '~/models/Chapter'
+import localStorage from '~/utils/localStorage'
 
 type MediaLightbox = {
   thumb: string
@@ -126,6 +127,11 @@ export default Vue.extend({
         params: { slug: this.slug, chapter: chapter.number },
       })
     },
+  },
+  mounted() {
+    if (this.mangaChapter) {
+      localStorage.saveHistoryManga(this.mangaChapter)
+    }
   },
   methods: {
     openGallery(index: number) {

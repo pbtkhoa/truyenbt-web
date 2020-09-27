@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import { getDiffDate, getMangaStatus } from '~/utils/helpers'
 import { DATE_FORMAT, MangaStatus } from '~/utils/constants'
 
-Vue.filter('formatViewCount', function (viewCount: number) {
+Vue.filter('formatCount', function (viewCount: number) {
   if (!viewCount) return 0
   return Intl.NumberFormat('en-US', { maximumSignificantDigits: 3 }).format(viewCount)
 })

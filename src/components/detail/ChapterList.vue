@@ -13,7 +13,9 @@
           >
             <div :class="$style.chapterNumber">Chương {{ chapter.number }}</div>
             <div :class="$style.chapterInfo">
-              <span>{{ chapter.viewCount | formatViewCount }}</span>
+              <span :class="$style.countInfo">
+                <font-awesome-icon icon="eye" :class="$style.countIcon" />{{ chapter.viewCount | formatCount }}
+              </span>
               <time>{{ chapter.publishedAt | formatDate }}</time>
             </div>
           </nuxt-link>
@@ -64,9 +66,12 @@ export default Vue.extend({
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      span {
+      .countInfo {
         color: $gray-900;
         font-size: $font-size-base * 0.8;
+        .countIcon {
+          margin-right: 8px;
+        }
       }
       time {
         margin-left: 15px;

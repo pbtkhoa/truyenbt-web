@@ -52,7 +52,7 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/style-resources', 'nuxt-typed-vuex'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/style-resources', 'nuxt-typed-vuex', '@nuxtjs/fontawesome'],
   /*
    ** Nuxt.js modules
    */
@@ -66,7 +66,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://localhost:8000/api',
+    baseURL: 'http://localhost:8888/api',
   },
   /*
    ** Build configuration
@@ -82,5 +82,11 @@ export default {
 
   env: {
     baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+  },
+
+  fontawesome: {
+    icons: {
+      solid: ['faThumbsUp', 'faHeart', 'faEye'],
+    },
   },
 }

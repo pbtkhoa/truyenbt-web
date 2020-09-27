@@ -31,7 +31,7 @@
               </div>
             </template>
             <template v-else>
-              <a :href="item.to" :title="item.name">{{ item.name }}</a>
+              <nuxt-link :to="item.to" :title="item.name">{{ item.name }}</nuxt-link>
             </template>
           </li>
         </ul>
@@ -59,8 +59,13 @@ export default Vue.extend({
       navList: [
         {
           id: 'home',
-          to: '#',
+          to: '/',
           name: 'Trang chủ',
+        },
+        {
+          id: 'lich-su',
+          to: { name: 'lich-su' },
+          name: 'Lịch sử',
         },
         {
           id: 'tag',
