@@ -20,3 +20,5 @@ export enum MangaSortDate {
 export const DATE_FORMAT = {
   DATE: 'MM-DD-YYYY',
 }
+
+export const ACCESS_COUNT_TOKEN = 'access-count-token'

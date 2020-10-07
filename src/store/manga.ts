@@ -14,7 +14,10 @@ export const MangaActions = {
   GET_DETAIL_MANGA_CHAPTER: 'manga/GET_DETAIL_MANGA_CHAPTER',
   SEARCH_MANGAS: 'manga/SEARCH_MANGAS',
   GET_HISTORIES_MANGA: 'manga/GET_HISTORIES_MANGA',
-  INC_LIKE_MANGA: 'manga/INC_LIKE_MANGA',
+  GET_FOLLOW_MANGAS: 'manga/GET_FOLLOW_MANGAS',
+  LIKE_MANGA: 'manga/LIKE_MANGA',
+  FOLLOW_MANGA: 'manga/FOLLOW_MANGA',
+  UN_FOLLOW_MANGA: 'manga/UN_FOLLOW_MANGA',
 }
 
 const _MangaActions = removeNamespace<typeof MangaActions>('manga/', MangaActions)
@@ -23,6 +26,12 @@ export const state = () => ({
   hotMangas: [] as Manga[],
   topMangas: {} as { [key: string]: Manga[] },
   paginateList: {
+    items: [] as Manga[],
+    total: 0 as number,
+    page: 1 as number,
+    totalPages: 1 as number,
+  },
+  paginateFollow: {
     items: [] as Manga[],
     total: 0 as number,
     page: 1 as number,
@@ -43,9 +52,20 @@ export const mutations = mutationTree(state, {
   setItem: (state, manga: Manga | null) => (state.item = manga),
   setMangaChapter: (state, mangaChapter: MangaChapter | null) => (state.mangaChapter = mangaChapter),
   setHistoriesManga: (state, historiesManga: MangaHistory[]) => (state.historiesManga = historiesManga),
-  incMangaLike: (state) => {
+  setPaginateFollow: (state, paginateFollow: Paginate<Manga>) => (state.paginateFollow = paginateFollow),
+  likeManga: (state) => {
     if (state.item) {
-      state.item = { ...state.item, like: state.item.like + 1 }
+      state.item = { ...state.item, isLike: true, like: state.item.like + 1 }
+    }
+  },
+  followManga: (state) => {
+    if (state.item) {
+      state.item = { ...state.item, isFollow: true, follow: state.item.follow + 1 }
+    }
+  },
+  unFollowManga: (state) => {
+    if (state.item && state.item.follow > 0) {
+      state.item = { ...state.item, isFollow: false, follow: state.item.follow - 1 }
     }
   },
 })
@@ -57,9 +77,11 @@ export const actions = actionTree(
       const hotMangas: Manga[] = await this.$axios.$get(`manga/hot-mangas`)
       commit('setHotMangas', hotMangas)
     },
-    async [_MangaActions.GET_TOP_MANGAS]({ commit }, dateSort: MangaSortDate): Promise<void> {
-      const topMangas: Manga[] = await this.$axios.$get(`manga/top-mangas?sort-date=${dateSort}`)
-      commit('setTopMangas', { topMangas, dateSort })
+    async [_MangaActions.GET_TOP_MANGAS]({ commit, state }, dateSort: MangaSortDate): Promise<void> {
+      if (!state.topMangas[dateSort] || state.topMangas[dateSort].length === 0) {
+        const topMangas: Manga[] = await this.$axios.$get(`manga/top-mangas?sort-date=${dateSort}`)
+        commit('setTopMangas', { topMangas, dateSort })
+      }
     },
     async [_MangaActions.GET_LATEST_MANGAS]({ commit }, page: number = 1): Promise<void> {
       const mangaLatest: Paginate<Manga> = await this.$axios.$get(`manga?limit=12&page=${page}`)
@@ -91,12 +113,24 @@ export const actions = actionTree(
       commit('setPaginateList', mangas)
     },
     [_MangaActions.GET_HISTORIES_MANGA]({ commit }): void {
-      const historiesManga: MangaHistory[] = localStorage.getHistoriesManga()
+      const historiesManga: MangaHistory[] = localStorage.getHistoryMangas()
       commit('setHistoriesManga', historiesManga)
     },
-    async [_MangaActions.INC_LIKE_MANGA]({ commit }, slug: string): Promise<void> {
+    async [_MangaActions.GET_FOLLOW_MANGAS]({ commit }, page: number = 1): Promise<void> {
+      const followMangas: Paginate<Manga> = await this.$axios.$get(`manga/follow-mangas?limit=12&page=${page}`)
+      commit('setPaginateFollow', followMangas)
+    },
+    async [_MangaActions.LIKE_MANGA]({ commit }, slug: string): Promise<void> {
       await this.$axios.$put(`manga/${slug}/like`)
-      commit('incMangaLike')
+      commit('likeManga')
+    },
+    async [_MangaActions.FOLLOW_MANGA]({ commit }, slug: string): Promise<void> {
+      await this.$axios.$put(`manga/${slug}/follow`)
+      commit('followManga')
+    },
+    async [_MangaActions.UN_FOLLOW_MANGA]({ commit }, slug: string): Promise<void> {
+      await this.$axios.$delete(`manga/${slug}/follow`)
+      commit('unFollowManga')
     },
   }
 )

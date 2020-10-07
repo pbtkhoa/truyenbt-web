@@ -18,4 +18,6 @@ export default interface Manga {
   author: Author
   tags: Tag[]
   publishedAt: string
+  isLike: boolean
+  isFollow: boolean
 }

@@ -1,7 +1,7 @@
 import MangaChapter from '~/models/MangaChapter'
 import MangaHistory from '~/models/MangaHistory'
 
-const HISTORIES_MANGA = 'histories_manga'
+const HISTORY_MANGAS = 'history_manga'
 
 export default {
   hasWindow() {
@@ -22,9 +22,8 @@ export default {
 
     return defaultValue
   },
-
-  getHistoriesManga(): MangaHistory[] {
-    return this.getStorage<MangaHistory[]>(HISTORIES_MANGA, [])
+  getHistoryMangas(): MangaHistory[] {
+    return this.getStorage<MangaHistory[]>(HISTORY_MANGAS, [])
   },
   saveHistoryManga(mangaChapter: MangaChapter): void {
     if (this.hasWindow()) {
@@ -36,17 +35,17 @@ export default {
         readAt: new Date().toISOString(),
       }
 
-      const mangaHistories: MangaHistory[] = this.getHistoriesManga()
-      const historyIdx: number = mangaHistories.findIndex((manga) => manga.slug === mangaChapter.slug)
-      if (historyIdx > -1) {
-        mangaHistories[historyIdx] = readingManga
+      const historyMangas: MangaHistory[] = this.getHistoryMangas()
+      const mangaIdx: number = historyMangas.findIndex((manga) => manga.slug === mangaChapter.slug)
+      if (mangaIdx > -1) {
+        historyMangas[mangaIdx] = readingManga
       } else {
-        mangaHistories.push(readingManga)
+        historyMangas.push(readingManga)
       }
-      mangaHistories.sort(function (a, b) {
+      historyMangas.sort(function (a, b) {
         return <any>new Date(b.readAt) - <any>new Date(a.readAt)
       })
-      this.setStorage(HISTORIES_MANGA, mangaHistories)
+      this.setStorage(HISTORY_MANGAS, historyMangas)
     }
   },
 }

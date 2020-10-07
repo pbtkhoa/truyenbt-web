@@ -1,7 +1,7 @@
 <template>
   <header :class="$style.header">
     <div :class="$style.headerTop">
-      <div :class="[$style.container, 'container d-flex']">
+      <div :class="[$style.container, 'container justify-content-between d-flex']">
         <img src="/logo.png" alt="TruyenBT" :class="$style.logo" />
         <ul :class="$style.topLinks">
           <li>
@@ -10,8 +10,13 @@
           <li>
             <a href="#">LỊCH SỬ</a>
           </li>
-          <li>
-            <a href="#">TRUYỆN TOP</a>
+          <li v-if="$auth.user">
+            <a href="#">Tài khoản</a>
+          </li>
+          <li v-else>
+            <a href="#" @click="onClickLogin">Đăng nhập</a>
+            <span>/</span>
+            <a href="#" @click="onClickRegister">Đăng ký</a>
           </li>
         </ul>
       </div>
@@ -37,12 +42,14 @@
         </ul>
       </div>
     </div>
+    <auth :on-change-mode="onChangeMode" :is-register-mode="isRegisterMode" />
   </header>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import { TagActions } from '~/store/tag'
 import Tag from '~/models/Tag'
+import Auth from '~/components/shared/Auth.vue'
 
 type NavItem = {
   id: string
@@ -52,15 +59,24 @@ type NavItem = {
 }
 
 export default Vue.extend({
+  components: {
+    Auth,
+  },
   data() {
     return {
       isOpen: false,
+      isRegisterMode: false,
       active: false,
       navList: [
         {
           id: 'home',
           to: '/',
           name: 'Trang chủ',
+        },
+        {
+          id: 'theo-doi',
+          to: { name: 'theo-doi' },
+          name: 'Theo dõi',
         },
         {
           id: 'lich-su',
@@ -93,6 +109,17 @@ export default Vue.extend({
     toggleDropDown(): void {
       this.isOpen = !this.isOpen
       this.active = !this.active
+    },
+    onClickLogin() {
+      this.isRegisterMode = false
+      this.$modal.show('authenticate')
+    },
+    onClickRegister() {
+      this.isRegisterMode = true
+      this.$modal.show('authenticate')
+    },
+    onChangeMode(): void {
+      this.isRegisterMode = !this.isRegisterMode
     },
   },
 })

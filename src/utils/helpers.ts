@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
 import duration, { Duration } from 'dayjs/plugin/duration'
-import { MangaStatus } from '~/utils/constants'
+import { NuxtCookies } from 'cookie-universal-nuxt'
+import { ACCESS_COUNT_TOKEN, MangaStatus } from '~/utils/constants'
+import User from '~/models/User'
+import { Auth } from '@nuxtjs/auth'
 dayjs.extend(duration)
 
 type Type = { [key: string]: string }
@@ -50,4 +53,22 @@ export function getDiffDate(chooseDate: string) {
   }
 
   return `${seconds} giây trước`
+}
+
+export function setUserForAuth($cookies: NuxtCookies, $auth: Auth, user: User) {
+  $cookies.set(ACCESS_COUNT_TOKEN, user.accessCountToken, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 7, // 1 week
+  })
+
+  // Transform the user object
+  const customUser = {
+    ...user,
+    fullName: `${user.firstName} ${user.lastName}`,
+  }
+
+  // Set the custom user
+  // The `customUser` object will be accessible through `this.$auth.user`
+  // Like `this.$auth.user.fullName` or `this.$auth.user.roles`
+  $auth.setUser(customUser)
 }

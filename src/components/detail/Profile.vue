@@ -46,8 +46,27 @@
         </nuxt-link>
       </div>
       <div :class="[$style.profileAction, 'd-flex']">
-        <button :class="[$style.actionBtn, $style.follow]"><font-awesome-icon icon="heart" />Theo dõi</button>
-        <button :class="[$style.actionBtn, $style.like]" :disabled="isLikeProcessing" @click="onClickLikeManga">
+        <button
+          v-if="manga.isFollow"
+          :class="[$style.actionBtn, $style.follow]"
+          :disabled="isFollowProcessing"
+          @click="onClickUnFollowManga"
+        >
+          <font-awesome-icon icon="heart-broken" />Hủy theo dõi
+        </button>
+        <button
+          v-else
+          :class="[$style.actionBtn, $style.follow]"
+          :disabled="isFollowProcessing"
+          @click="onClickFollowManga"
+        >
+          <font-awesome-icon icon="heart" />Theo dõi
+        </button>
+        <button
+          :class="[$style.actionBtn, $style.like]"
+          :disabled="isLikeProcessing || manga.isLike"
+          @click="onClickLikeManga"
+        >
           <font-awesome-icon icon="thumbs-up" />Thích
         </button>
       </div>
@@ -65,11 +84,23 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    isFollowProcessing: {
+      type: Boolean,
+      default: false,
+    },
     manga: {
       type: Object,
       default: null,
     } as PropOptions<Manga>,
     onClickLikeManga: {
+      type: Function,
+      default: () => {},
+    },
+    onClickFollowManga: {
+      type: Function,
+      default: () => {},
+    },
+    onClickUnFollowManga: {
       type: Function,
       default: () => {},
     },

@@ -1,6 +1,13 @@
 <template>
   <section :class="$style.detail">
-    <profile :manga="manga" :on-click-like-manga="onClickLikeManga" :is-like-processing="isLikeProcessing" />
+    <profile
+      :manga="manga"
+      :on-click-like-manga="onClickLikeManga"
+      :on-click-follow-manga="onClickFollowManga"
+      :on-click-un-follow-manga="onClickUnFollowManga"
+      :is-like-processing="isLikeProcessing"
+      :is-follow-processing="isFollowProcessing"
+    />
     <chapter-list :chapters="manga.chapters" :slug="slug" />
   </section>
 </template>
@@ -27,6 +34,7 @@ export default Vue.extend({
     return {
       slug: '',
       isLikeProcessing: false,
+      isFollowProcessing: false,
     }
   },
   computed: {
@@ -37,8 +45,18 @@ export default Vue.extend({
   methods: {
     async onClickLikeManga() {
       this.isLikeProcessing = true
-      await this.$store.dispatch(MangaActions.INC_LIKE_MANGA, this.slug)
+      await this.$store.dispatch(MangaActions.LIKE_MANGA, this.slug)
       this.isLikeProcessing = false
+    },
+    async onClickFollowManga() {
+      this.isFollowProcessing = true
+      await this.$store.dispatch(MangaActions.FOLLOW_MANGA, this.slug)
+      this.isFollowProcessing = false
+    },
+    async onClickUnFollowManga() {
+      this.isFollowProcessing = true
+      await this.$store.dispatch(MangaActions.UN_FOLLOW_MANGA, this.slug)
+      this.isFollowProcessing = false
     },
   },
 })

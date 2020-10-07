@@ -1,12 +1,13 @@
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 import { NuxtCookies } from 'cookie-universal-nuxt'
-import { suid } from 'rand-token'
+import { v4 } from 'uuid'
+import { ACCESS_COUNT_TOKEN } from '~/utils/constants'
 
 export default function ({ $axios, $cookies }: { $axios: NuxtAxiosInstance; $cookies: NuxtCookies }) {
-  let accessCountToken: string = $cookies.get('access-count-token')
+  let accessCountToken: string = $cookies.get(ACCESS_COUNT_TOKEN)
   if (!accessCountToken) {
-    accessCountToken = suid(16)
-    $cookies.set('access-count-token', accessCountToken, {
+    accessCountToken = v4()
+    $cookies.set(ACCESS_COUNT_TOKEN, accessCountToken, {
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 1 week
     })
