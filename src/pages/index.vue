@@ -1,7 +1,11 @@
 <template>
   <div id="homepage">
-    <slide />
-    <main-content :on-change-paginate="onChangePaginate" />
+    <slide :hot-mangas="hotMangas" />
+    <main-content
+      :on-change-paginate="getLatestManga"
+      :mangas="latestMangas.items"
+      :total-pages="latestMangas.totalPages"
+    />
   </div>
 </template>
 
@@ -11,6 +15,7 @@ import Slide from '~/components/homepage/Slide.vue'
 import MainContent from '~/components/homepage/main.vue'
 import { MangaActions } from '~/store/manga'
 import { MangaSortDate } from '~/utils/constants'
+import Manga from '~/models/Manga'
 
 export default Vue.extend({
   layout: 'dashboard',
@@ -18,18 +23,30 @@ export default Vue.extend({
     Slide,
     MainContent,
   },
-  async asyncData({ store }): Promise<void> {
+  async fetch() {
     await Promise.all([
-      store.dispatch(MangaActions.GET_HOT_MANGAS),
-      store.dispatch(MangaActions.GET_TOP_MANGAS, MangaSortDate.WEEK),
-      store.dispatch(MangaActions.GET_TOP_MANGAS, MangaSortDate.MONTH),
-      store.dispatch(MangaActions.GET_TOP_MANGAS, MangaSortDate.YEAR),
-      store.dispatch(MangaActions.GET_LATEST_MANGAS),
+      this.getLatestManga(),
+      this.getHotMangas(),
+      this.$store.dispatch(MangaActions.GET_TOP_MANGAS, MangaSortDate.WEEK),
+      this.$store.dispatch(MangaActions.GET_TOP_MANGAS, MangaSortDate.MONTH),
+      this.$store.dispatch(MangaActions.GET_TOP_MANGAS, MangaSortDate.YEAR),
     ])
   },
+  data() {
+    return {
+      hotMangas: [] as Manga[],
+      latestMangas: {
+        items: [] as Manga[],
+        totalPages: 1 as number,
+      } as Paginate<Manga>,
+    }
+  },
   methods: {
-    async onChangePaginate(page: number) {
-      await this.$store.dispatch(MangaActions.GET_LATEST_MANGAS, page)
+    async getHotMangas() {
+      this.hotMangas = await this.$axios.$get(`manga/hot-mangas`)
+    },
+    async getLatestManga(page: number = 1) {
+      this.latestMangas = await this.$axios.$get(`manga?limit=12&page=${page}`)
     },
   },
 })

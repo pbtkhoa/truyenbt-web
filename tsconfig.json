@@ -15,7 +15,7 @@
       "~/*": ["./src/*"],
       "@/*": ["./*"]
     },
-    "types": ["@types/node", "@nuxt/types", "@nuxtjs/axios"]
+    "types": ["@types/node", "@nuxt/types", "@nuxtjs/axios", "@nuxtjs/auth", "vue-js-modal", "@types/nuxtjs__auth"]
   },
   "exclude": ["node_modules", ".nuxt", "dist"]
 }

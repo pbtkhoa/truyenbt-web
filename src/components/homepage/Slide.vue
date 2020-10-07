@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
 import { Swiper, Navigation, Autoplay } from 'swiper'
 import getAwesomeSwiper from 'vue-awesome-swiper/dist/exporter'
 import 'swiper/swiper-bundle.css'
@@ -44,6 +44,14 @@ const { directive } = getAwesomeSwiper(Swiper)
 export default Vue.extend({
   directives: {
     swiper: directive,
+  },
+  props: {
+    hotMangas: {
+      type: Array,
+      default() {
+        return []
+      },
+    } as PropOptions<Manga[]>,
   },
   data() {
     return {
@@ -59,11 +67,6 @@ export default Vue.extend({
         },
       },
     }
-  },
-  computed: {
-    hotMangas(): Manga[] {
-      return this.$accessor.manga.hotMangas
-    },
   },
   methods: {
     getFirstChapterNumber(manga: Manga): string {

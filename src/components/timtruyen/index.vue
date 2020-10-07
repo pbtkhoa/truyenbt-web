@@ -121,7 +121,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
 import Manga from '~/models/Manga'
 import MangaList from '~/components/shared/MangaList.vue'
 import Tag from '~/models/Tag'
@@ -130,12 +130,6 @@ import { MangaSortType, MangaStatus } from '~/utils/constants'
 export default Vue.extend({
   components: {
     MangaList,
-  },
-  data() {
-    return {
-      MANGA_STATUS: MangaStatus,
-      MANGA_SORT_TYPE: MangaSortType,
-    }
   },
   props: {
     onChangePaginate: {
@@ -154,17 +148,27 @@ export default Vue.extend({
       type: String,
       default: undefined,
     },
+    mangas: {
+      type: Array,
+      default() {
+        return []
+      },
+    } as PropOptions<Manga[]>,
+    totalPages: {
+      type: Number,
+      default: 0,
+    },
+  },
+  data() {
+    return {
+      MANGA_STATUS: MangaStatus,
+      MANGA_SORT_TYPE: MangaSortType,
+    }
   },
   computed: {
     tagDescription(): string {
       const tag: Tag | undefined = this.$accessor.tag.items.find((i: Tag) => this.tag === i.slug)
       return tag ? tag.description : 'Tất cả thể loại truyện tranh'
-    },
-    mangas(): Manga[] {
-      return this.$accessor.manga.paginateList.items
-    },
-    totalPages(): number {
-      return this.$accessor.manga.paginateList.totalPages
     },
     chunkTags(): Tag[][] {
       const items: Tag[] = this.$accessor.tag.items

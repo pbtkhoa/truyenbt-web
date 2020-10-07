@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
 import TopManga from '~/components/shared/TopManga/index.vue'
 import MangaList from '~/components/shared/MangaList.vue'
 import Manga from '~/models/Manga'
@@ -24,17 +24,19 @@ export default Vue.extend({
     TopManga,
   },
   props: {
+    mangas: {
+      type: Array,
+      default() {
+        return []
+      },
+    } as PropOptions<Manga[]>,
+    totalPages: {
+      type: Number,
+      default: 0,
+    },
     onChangePaginate: {
       type: Function,
       default: () => {},
-    },
-  },
-  computed: {
-    mangas(): Manga[] {
-      return this.$accessor.manga.paginateFollow.items
-    },
-    totalPages(): number {
-      return this.$accessor.manga.paginateFollow.totalPages
     },
   },
 })

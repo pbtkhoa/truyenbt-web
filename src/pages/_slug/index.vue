@@ -8,7 +8,7 @@
       :is-like-processing="isLikeProcessing"
       :is-follow-processing="isFollowProcessing"
     />
-    <chapter-list :chapters="manga.chapters" :slug="slug" />
+    <chapter-list :chapters="manga.chapters" :slug="manga.slug" />
   </section>
 </template>
 
@@ -16,7 +16,6 @@
 import Vue from 'vue'
 import Profile from '~/components/detail/Profile.vue'
 import ChapterList from '~/components/detail/ChapterList.vue'
-import { MangaActions } from '~/store/manga'
 import Manga from '~/models/Manga'
 
 export default Vue.extend({
@@ -25,38 +24,48 @@ export default Vue.extend({
     Profile,
     ChapterList,
   },
-  async asyncData({ store, params: { slug } }) {
-    await store.dispatch(MangaActions.GET_DETAIL_MANGAS, slug)
+  async asyncData({ $axios, params: { slug } }) {
+    const manga: Manga = await $axios.$get(`manga/${slug}`)
 
-    return { slug }
+    return { manga }
   },
   data() {
     return {
-      slug: '',
+      manga: null as Manga | null,
       isLikeProcessing: false,
       isFollowProcessing: false,
     }
   },
-  computed: {
-    manga(): Manga | null {
-      return this.$accessor.manga.item
-    },
-  },
   methods: {
     async onClickLikeManga() {
-      this.isLikeProcessing = true
-      await this.$store.dispatch(MangaActions.LIKE_MANGA, this.slug)
-      this.isLikeProcessing = false
+      if (this.manga) {
+        this.isLikeProcessing = true
+
+        await this.$axios.$put(`manga/${this.manga.slug}/like`)
+        this.manga = { ...this.manga, isLike: true, like: this.manga.like + 1 }
+
+        this.isLikeProcessing = false
+      }
     },
     async onClickFollowManga() {
-      this.isFollowProcessing = true
-      await this.$store.dispatch(MangaActions.FOLLOW_MANGA, this.slug)
-      this.isFollowProcessing = false
+      if (this.manga) {
+        this.isFollowProcessing = true
+
+        await this.$axios.$put(`manga/${this.manga.slug}/follow`)
+        this.manga = { ...this.manga, isFollow: true, follow: this.manga.follow + 1 }
+
+        this.isFollowProcessing = false
+      }
     },
     async onClickUnFollowManga() {
-      this.isFollowProcessing = true
-      await this.$store.dispatch(MangaActions.UN_FOLLOW_MANGA, this.slug)
-      this.isFollowProcessing = false
+      if (this.manga) {
+        this.isFollowProcessing = true
+
+        await this.$axios.$delete(`manga/${this.manga.slug}/follow`)
+        this.manga = { ...this.manga, isFollow: false, follow: this.manga.follow - 1 }
+
+        this.isFollowProcessing = false
+      }
     },
   },
 })

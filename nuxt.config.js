@@ -37,6 +37,8 @@ export default {
   plugins: [
     '~/plugins/vue-filter.ts',
     '~/plugins/vue-tooltip.ts',
+    '~/plugins/vue-modal.ts',
+    '~/plugins/vue-validate.ts',
     '~/plugins/vue-axios.ts',
     '~/plugins/vue-lazyload.ts',
     {
@@ -59,6 +61,8 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
     'cookie-universal-nuxt',
   ],
   /*
@@ -72,7 +76,9 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    transpile: ['@nuxtjs/auth'],
+  },
 
   srcDir: 'src/',
 
@@ -86,7 +92,21 @@ export default {
 
   fontawesome: {
     icons: {
-      solid: ['faThumbsUp', 'faHeart', 'faEye'],
+      solid: ['faThumbsUp', 'faHeart', 'faEye', 'faHeartBroken'],
+    },
+  },
+
+  auth: {
+    localStorage: false,
+    strategies: {
+      authToken: {
+        _scheme: '~/utils/authScheme',
+        endpoints: {
+          login: { url: 'auth/login', method: 'post', propertyName: 'accessToken' },
+          user: { url: 'auth/profile', method: 'get', propertyName: false },
+        },
+        autoFetchUser: false,
+      },
     },
   },
 }

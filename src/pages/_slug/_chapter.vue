@@ -42,7 +42,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import VSelect from 'vue-select'
-import { MangaActions } from '~/store/manga'
 import MangaChapter from '~/models/MangaChapter'
 import Chapter from '~/models/Chapter'
 import localStorage from '~/utils/localStorage'
@@ -57,11 +56,8 @@ export default Vue.extend({
   components: {
     VSelect,
   },
-  async asyncData({ store, params: { slug, chapter } }) {
-    const mangaChapter: MangaChapter | null = await store.dispatch(MangaActions.GET_DETAIL_MANGA_CHAPTER, {
-      slug,
-      chapter,
-    })
+  async asyncData({ $axios, params: { slug, chapter } }) {
+    const mangaChapter: MangaChapter | null = await $axios.$get(`manga/${slug}/${chapter}`)
 
     let chapterList: Chapter[] = []
     let selectedChapter: Chapter | null = null

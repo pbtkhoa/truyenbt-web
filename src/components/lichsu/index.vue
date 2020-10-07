@@ -13,24 +13,23 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropOptions } from 'vue'
 import List from './list.vue'
 import TopManga from '~/components/shared/TopManga/index.vue'
 import MangaHistory from '~/models/MangaHistory'
-import { MangaActions } from '~/store/manga'
 
 export default Vue.extend({
   components: {
     List,
     TopManga,
   },
-  computed: {
-    mangas(): MangaHistory[] {
-      return this.$accessor.manga.historiesManga
-    },
-  },
-  mounted() {
-    this.$store.dispatch(MangaActions.GET_HISTORIES_MANGA)
+  props: {
+    mangas: {
+      type: Array,
+      default() {
+        return []
+      },
+    } as PropOptions<MangaHistory[]>,
   },
 })
 </script>
