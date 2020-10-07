@@ -45,7 +45,7 @@
         </li>
       </ul>
       <paginate
-        v-if="totalPages > 0"
+        v-if="totalPages > 1"
         :page-count="totalPages"
         :click-handler="onChangePaginate"
         container-class="text-center"

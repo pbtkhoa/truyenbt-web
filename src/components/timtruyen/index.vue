@@ -6,25 +6,30 @@
           <h4 class="text-center mb-4">Tìm truyện tranh</h4>
           <p :class="$style.tagDescription">{{ tagDescription }}</p>
           <div class="row mb-3">
+            <form class="col-6 offset-3" @submit.prevent="onSubmitSearch">
+              <input type="text" placeholder="Tìm truyện" class="form-input" name="keyword" :value="keyword" />
+            </form>
+          </div>
+          <div class="row mb-3">
             <h5 class="col-3 text-right">Tình trạng</h5>
             <div class="col-9">
               <div class="d-flex">
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: status === undefined }]"
                   :exact-active-class="$style.active"
-                  :to="{ name: 'tim-truyen', query: { sort, tag, status: undefined } }"
+                  :to="{ name: 'tim-truyen', query: { sort, tag, keyword, status: undefined } }"
                 >
                   Tất cả
                 </nuxt-link>
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: status === MANGA_STATUS.COMPLETE }]"
-                  :to="{ name: 'tim-truyen', query: { sort, tag, status: MANGA_STATUS.COMPLETE } }"
+                  :to="{ name: 'tim-truyen', query: { sort, tag, keyword, status: MANGA_STATUS.COMPLETE } }"
                 >
                   Hoàn thành
                 </nuxt-link>
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: status === MANGA_STATUS.CONTINUE }]"
-                  :to="{ name: 'tim-truyen', query: { sort, tag, status: MANGA_STATUS.CONTINUE } }"
+                  :to="{ name: 'tim-truyen', query: { sort, tag, keyword, status: MANGA_STATUS.CONTINUE } }"
                 >
                   Đang tiến hành
                 </nuxt-link>
@@ -38,14 +43,14 @@
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: sort === undefined }]"
                   :exact-active-class="$style.active"
-                  :to="{ name: 'tim-truyen', query: { status, tag, sort: undefined } }"
+                  :to="{ name: 'tim-truyen', query: { status, tag, keyword, sort: undefined } }"
                 >
                   Ngày cập nhật
                 </nuxt-link>
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: sort === MANGA_SORT_TYPE.BY_CREATED }]"
                   :exact-active-class="$style.active"
-                  :to="{ name: 'tim-truyen', query: { status, tag, sort: MANGA_SORT_TYPE.BY_CREATED } }"
+                  :to="{ name: 'tim-truyen', query: { status, tag, keyword, sort: MANGA_SORT_TYPE.BY_CREATED } }"
                 >
                   Truyện mới
                 </nuxt-link>
@@ -54,28 +59,28 @@
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: sort === MANGA_SORT_TYPE.BY_TOP_ALL }]"
                   :exact-active-class="$style.active"
-                  :to="{ name: 'tim-truyen', query: { status, tag, sort: MANGA_SORT_TYPE.BY_TOP_ALL } }"
+                  :to="{ name: 'tim-truyen', query: { status, tag, keyword, sort: MANGA_SORT_TYPE.BY_TOP_ALL } }"
                 >
                   Top all
                 </nuxt-link>
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: sort === MANGA_SORT_TYPE.BY_TOP_YEAR }]"
                   :exact-active-class="$style.active"
-                  :to="{ name: 'tim-truyen', query: { status, tag, sort: MANGA_SORT_TYPE.BY_TOP_YEAR } }"
+                  :to="{ name: 'tim-truyen', query: { status, tag, keyword, sort: MANGA_SORT_TYPE.BY_TOP_YEAR } }"
                 >
                   Top năm
                 </nuxt-link>
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: sort === MANGA_SORT_TYPE.BY_TOP_MONTH }]"
                   :exact-active-class="$style.active"
-                  :to="{ name: 'tim-truyen', query: { status, tag, sort: MANGA_SORT_TYPE.BY_TOP_MONTH } }"
+                  :to="{ name: 'tim-truyen', query: { status, tag, keyword, sort: MANGA_SORT_TYPE.BY_TOP_MONTH } }"
                 >
                   Top tháng
                 </nuxt-link>
                 <nuxt-link
                   :class="[$style.btn, { [$style.active]: sort === MANGA_SORT_TYPE.BY_TOP_WEEK }]"
                   :exact-active-class="$style.active"
-                  :to="{ name: 'tim-truyen', query: { status, tag, sort: MANGA_SORT_TYPE.BY_TOP_WEEK } }"
+                  :to="{ name: 'tim-truyen', query: { status, tag, keyword, sort: MANGA_SORT_TYPE.BY_TOP_WEEK } }"
                 >
                   Top tuần
                 </nuxt-link>
@@ -96,7 +101,7 @@
                 <td colspan="2">
                   <nuxt-link
                     :class="{ [$style.tagActive]: tag === undefined }"
-                    :to="{ name: 'tim-truyen', query: { status, sort, tag: undefined } }"
+                    :to="{ name: 'tim-truyen', query: { status, sort, keyword, tag: undefined } }"
                   >
                     Tất cả thể loại</nuxt-link
                   >
@@ -106,7 +111,7 @@
                 <td v-for="item in tags" :key="item._id" :colspan="tags.length === 2 ? 1 : 2">
                   <nuxt-link
                     :class="{ [$style.tagActive]: tag === item.slug }"
-                    :to="{ name: 'tim-truyen', query: { status, sort, tag: item.slug } }"
+                    :to="{ name: 'tim-truyen', query: { status, sort, keyword, tag: item.slug } }"
                   >
                     {{ item.name }}
                   </nuxt-link>
@@ -136,6 +141,10 @@ export default Vue.extend({
       type: Function,
       default: () => {},
     },
+    onSubmitSearch: {
+      type: Function,
+      default: () => {},
+    },
     status: {
       type: String,
       default: undefined,
@@ -145,6 +154,10 @@ export default Vue.extend({
       default: undefined,
     },
     tag: {
+      type: String,
+      default: undefined,
+    },
+    keyword: {
       type: String,
       default: undefined,
     },

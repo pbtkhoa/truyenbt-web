@@ -3,9 +3,11 @@
     :tag="tag"
     :status="status"
     :sort="sort"
+    :keyword="keyword"
     :mangas="searchMangas.items"
     :total-pages="searchMangas.totalPages"
     :on-change-paginate="getSearchMangas"
+    :on-submit-search="submitSearch"
   />
 </template>
 
@@ -20,10 +22,11 @@ export default Vue.extend({
     TimTruyen,
   },
   async fetch() {
-    const { tag, status, sort } = this.$route.query as { [key: string]: string }
+    const { tag, status, sort, keyword } = this.$route.query as { [key: string]: string }
     this.tag = tag
     this.status = status
     this.sort = sort
+    this.keyword = keyword
 
     await this.getSearchMangas()
   },
@@ -36,6 +39,7 @@ export default Vue.extend({
       status: undefined as string | undefined,
       tag: undefined as string | undefined,
       sort: undefined as string | undefined,
+      keyword: undefined as string | undefined,
     }
   },
   watch: {
@@ -46,10 +50,23 @@ export default Vue.extend({
       this.searchMangas = await this.$axios.$get(`manga/search-mangas`, {
         params: {
           page,
+          keyword: this.keyword,
           status: this.status,
           sort: this.sort,
           tags: this.tag,
           limit: 12,
+        },
+      })
+    },
+    submitSearch(submitEvent: any) {
+      const keyword: string = submitEvent.target.elements.keyword.value
+      this.$router.push({
+        name: 'tim-truyen',
+        query: {
+          sort: this.sort,
+          tag: this.tag,
+          status: this.status,
+          keyword: keyword || undefined,
         },
       })
     },
