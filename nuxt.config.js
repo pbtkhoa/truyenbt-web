@@ -1,10 +1,5 @@
 export default {
   /*
-   ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
-   */
-  mode: 'universal',
-  /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
    */
@@ -54,7 +49,13 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/style-resources', 'nuxt-typed-vuex', '@nuxtjs/fontawesome'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxtjs/style-resources',
+    'nuxt-typed-vuex',
+    '@nuxtjs/fontawesome',
+    '@nuxtjs/tailwindcss',
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -94,6 +95,9 @@ export default {
     icons: {
       solid: ['faThumbsUp', 'faHeart', 'faEye', 'faHeartBroken'],
     },
+  },
+  tailwindcss: {
+    jit: true,
   },
 
   auth: {
