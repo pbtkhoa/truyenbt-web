@@ -32,31 +32,31 @@ $dark: $gray-800 !default;
 
 // scss-docs-start colors-map
 $colors: (
-  "blue": $blue,
-  "indigo": $indigo,
-  "purple": $purple,
-  "pink": $pink,
-  "red": $red,
-  "orange": $orange,
-  "yellow": $yellow,
-  "green": $green,
-  "teal": $teal,
-  "cyan": $cyan,
-  "white": $white,
-  "gray": $gray-600,
-  "gray-dark": $gray-800
+  'blue': $blue,
+  'indigo': $indigo,
+  'purple': $purple,
+  'pink': $pink,
+  'red': $red,
+  'orange': $orange,
+  'yellow': $yellow,
+  'green': $green,
+  'teal': $teal,
+  'cyan': $cyan,
+  'white': $white,
+  'gray': $gray-600,
+  'gray-dark': $gray-800,
 ) !default;
 
 // scss-docs-start theme-colors-map
 $theme-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "success": $success,
-  "info": $info,
-  "warning": $warning,
-  "danger": $danger,
-  "light": $light,
-  "dark": $dark
+  'primary': $primary,
+  'secondary': $secondary,
+  'success': $success,
+  'info': $info,
+  'warning': $warning,
+  'danger': $danger,
+  'light': $light,
+  'dark': $dark,
 ) !default;
 
 $body-bg: $white !default;
@@ -70,11 +70,9 @@ $text-muted: $gray-600 !default;
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto,
-  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
-  "Liberation Mono", "Courier New", monospace !default;
+$font-family-sans-serif: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji' !default;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !default;
 // stylelint-enable value-keyword-case
 $font-family-base: var(--bs-font-sans-serif) !default;
 $font-family-code: var(--bs-font-monospace) !default;
@@ -114,11 +112,7 @@ $dt-font-weight: $font-weight-bold !default;
 $include-column-box-sizing: true !default;
 $paragraph-margin-bottom: 1rem !default;
 
-$gradient: linear-gradient(
-  180deg,
-  rgba($white, 0.15),
-  rgba($white, 0)
-) !default;
+$gradient: linear-gradient(180deg, rgba($white, 0.15), rgba($white, 0)) !default;
 
 // Grid containers
 //
@@ -130,7 +124,7 @@ $container-max-widths: (
   md: 720px,
   lg: 960px,
   xl: 1140px,
-  xxl: 1320px
+  xxl: 1320px,
 ) !default;
 
 // Container padding
@@ -143,7 +137,7 @@ $spacers: (
   2: $spacer / 2,
   3: $spacer,
   4: $spacer * 1.5,
-  5: $spacer * 3
+  5: $spacer * 3,
 ) !default;
 
 $grid-gutter-width: 1.5rem !default;
@@ -157,7 +151,7 @@ $grid-breakpoints: (
   md: 768px,
   lg: 992px,
   xl: 1200px,
-  xxl: 1400px
+  xxl: 1400px,
 ) !default;
 
 $border-width: 1px !default;
@@ -239,4 +233,4 @@ $table-th-font-weight: null !default;
 // Quickly modify global styling by enabling or disabling optional features.
 $enable-rounded: true !default;
 $enable-button-pointers: true !default;
-$enable-important-utilities:  true !default;
+$enable-important-utilities: true !default;

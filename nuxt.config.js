@@ -50,6 +50,7 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
+    '@nuxt/postcss8',
     '@nuxt/typescript-build',
     '@nuxtjs/style-resources',
     'nuxt-typed-vuex',
@@ -98,6 +99,7 @@ export default {
   },
   tailwindcss: {
     jit: true,
+    exposeConfig: true,
   },
 
   auth: {

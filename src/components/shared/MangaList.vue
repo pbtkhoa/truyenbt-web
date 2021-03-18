@@ -1,56 +1,69 @@
 <template>
   <div>
-    <div :class="$style.mangaContent">
-      <ul :class="['row p-0 mb-0', $style.mangaList]">
-        <li v-for="manga in mangas" :key="manga._id" :class="[$style.mangaItem, 'col-md-3']">
-          <v-popover trigger="hover" placement="right" :delay="{ show: 100, hide: 200 }">
-            <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
-              <img v-lazy="manga.imagePreview" />
-            </nuxt-link>
-            <template slot="popover">
-              <div :class="$style.moreInfo">
-                <h5 :class="$style.name">{{ manga.name }}</h5>
-                <h5 v-if="manga.otherName" :class="$style.otherName">Tên khác: {{ manga.otherName }}</h5>
-                <p :class="$style.info">Tình trạng: {{ manga.status | formatMangaStatus }}</p>
-                <p :class="$style.info">Lượt xem: {{ manga.viewCount | formatCount }}</p>
-                <div :class="$style.tags">
-                  <nuxt-link
-                    v-for="tag in manga.tags"
-                    :key="tag._id"
-                    :to="{ name: 'tim-truyen', query: { tag: tag.slug } }"
-                  >
-                    {{ tag.name }}
-                  </nuxt-link>
-                </div>
-                <p :class="$style.description">{{ manga.description }}</p>
+    <ul class="p-0 mb-0 list-none grid grid-cols-4 gap-4">
+      <li v-for="manga in mangas" :key="manga._id" class="mb-4">
+        <v-popover trigger="hover" placement="right" :delay="{ show: 100, hide: 200 }">
+          <nuxt-link
+            class="relative block w-full rounded overflow-hidden mb-1 group"
+            :to="{ name: 'slug', params: { slug: manga.slug } }"
+          >
+            <img
+              v-lazy="manga.imagePreview"
+              class="w-full transform transition-all duration-300 group-hover:scale-110"
+            />
+            <div
+              class="absolute left-0 right-0 top-0 bottom-0 bg-black opacity-0 group-hover:opacity-25 transition-all duration-300"
+            />
+          </nuxt-link>
+          <template slot="popover">
+            <div class="max-w-sm">
+              <h5 class="text-red-500 text-xs">{{ manga.name }}</h5>
+              <h5 v-if="manga.otherName" class="text-sm text-gray-700">Tên khác: {{ manga.otherName }}</h5>
+              <p class="mb-0 text-sm text-black">Tình trạng: {{ manga.status | formatMangaStatus }}</p>
+              <p class="mb-0 text-sm text-black">Lượt xem: {{ manga.viewCount | formatCount }}</p>
+              <div class="flex flex-wrap mt-1">
+                <nuxt-link
+                  v-for="tag in manga.tags"
+                  :key="tag._id"
+                  :to="{ name: 'tim-truyen', query: { tag: tag.slug } }"
+                  class="mb-2 mr-2 py-0.5 px-1.5 text-red-500 text-xs rounded-sm border-red-500 border bg-transparent no-underline hover:text-white hover:bg-red-500 transition"
+                >
+                  {{ tag.name }}
+                </nuxt-link>
               </div>
-            </template>
-          </v-popover>
-          <h3 :class="$style.mangaItemTitle">
-            <nuxt-link :to="{ name: 'slug', params: { slug: manga.slug } }">{{ manga.name }}</nuxt-link>
-          </h3>
-          <div v-for="chapter in manga.chapters" :key="chapter._id" :class="$style.mangaItemChapters">
-            <div :class="$style.chapterInfo">
-              <nuxt-link
-                :to="{
-                  name: 'slug-chapter',
-                  params: { slug: manga.slug, chapter: chapter.number },
-                }"
-              >
-                Chương {{ chapter.number }}
-              </nuxt-link>
-              <time>{{ chapter.publishedAt | formatDiffDate }}</time>
+              <p class="text-xs text-black mb-0">{{ manga.description }}</p>
             </div>
+          </template>
+        </v-popover>
+        <h3 class="text-center font-semibold text-base overflow-hidden h-12">
+          <nuxt-link
+            :to="{ name: 'slug', params: { slug: manga.slug } }"
+            class="text-black no-underline transition-all duration-200 hover:text-red-500"
+            >{{ manga.name }}
+          </nuxt-link>
+        </h3>
+        <div v-for="chapter in manga.chapters" :key="chapter._id">
+          <div class="flex w-full justify-between">
+            <nuxt-link
+              :to="{
+                name: 'slug-chapter',
+                params: { slug: manga.slug, chapter: chapter.number },
+              }"
+              class="text-black text-xs no-underline transition-all duration-200 hover:text-red-500"
+            >
+              Chương {{ chapter.number }}
+            </nuxt-link>
+            <time class="text-gray-500 italic text-xs">{{ chapter.publishedAt | formatDiffDate }}</time>
           </div>
-        </li>
-      </ul>
-      <paginate
-        v-if="totalPages > 1"
-        :page-count="totalPages"
-        :click-handler="onChangePaginate"
-        container-class="text-center"
-      />
-    </div>
+        </div>
+      </li>
+    </ul>
+    <paginate
+      v-if="totalPages > 1"
+      :page-count="totalPages"
+      :click-handler="onChangePaginate"
+      container-class="text-center"
+    />
   </div>
 </template>
 
@@ -81,136 +94,3 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style module lang="scss">
-.mangaContent {
-  .mangaList {
-    list-style: none;
-    .mangaItem {
-      margin-bottom: 15px;
-      .mangaItemImage {
-        position: relative;
-        display: block;
-        width: 100%;
-        border-radius: 5px;
-        overflow: hidden;
-        margin-bottom: 6px;
-        img {
-          transition: 0.4s all;
-          width: 100%;
-        }
-        &:after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          background-color: $black;
-          opacity: 0;
-          transition: 0.4s all;
-        }
-        &:hover {
-          img {
-            transition: 0.4s all;
-            transform: scale(1.1);
-          }
-          &:after {
-            opacity: 0.25;
-            transition: 0.4s all;
-          }
-        }
-      }
-      .mangaItemTitle {
-        text-align: center;
-        font-weight: 600;
-        font-size: $font-size-base * 0.9;
-        line-height: $font-size-base * 1.1;
-        height: $font-size-base * 2.2;
-        overflow: hidden;
-        a {
-          text-decoration: none;
-          color: $black;
-          transition: 0.2s all;
-          &:hover {
-            transition: 0.2s all;
-            color: $primary;
-          }
-        }
-      }
-      .mangaItemChapters {
-        .chapterInfo {
-          display: flex;
-          width: 100%;
-          justify-content: space-between;
-          a {
-            text-decoration: none;
-            color: $black;
-            font-size: $font-size-base * 0.8;
-            transition: 0.2s all;
-            &:hover {
-              transition: 0.2s all;
-              color: $primary;
-            }
-          }
-          time {
-            color: $gray-500;
-            font-size: $font-size-base * 0.8;
-            font-style: italic;
-          }
-        }
-      }
-    }
-  }
-}
-.popOver {
-  .trigger {
-    width: 100%;
-  }
-}
-.moreInfo {
-  max-width: 330px;
-  .name {
-    font-size: $font-size-base * 0.7;
-    color: $primary;
-  }
-  .otherName {
-    font-size: $font-size-base * 0.8;
-    color: $gray-700;
-  }
-  .info {
-    font-size: $font-size-base * 0.8;
-    color: $black;
-    margin-bottom: 0;
-  }
-  .tags {
-    margin: 6px 0 0 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0;
-    a {
-      margin-bottom: 3px;
-      padding: 2px 4px;
-      border-radius: 3px;
-      border: 1px solid $primary;
-      color: $primary;
-      background-color: transparent;
-      text-decoration: none;
-      margin-right: 5px;
-      transition: 0.2s all;
-      font-size: $font-size-base * 0.7;
-      &:hover {
-        transition: 0.2s all;
-        color: $white;
-        background-color: $primary;
-      }
-    }
-  }
-  .description {
-    font-size: $font-size-base * 0.8;
-    color: $black;
-    margin-bottom: 0;
-  }
-}
-</style>

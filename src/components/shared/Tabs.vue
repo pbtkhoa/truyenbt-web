@@ -1,19 +1,26 @@
 <template>
-  <div class="tabs-component">
-    <ul role="tablist" class="tabs-component-tabs">
+  <div class="my-14 border-l-1 border-t-1 border-r-1 border-gray-300">
+    <ul role="tabList" class="p-0 border-0 items-stretch flex justify-between bg-gray-200 mb-0">
       <li
         v-for="(tab, i) in tabs"
         v-show="tab.isVisible"
         :key="i"
-        :class="{ 'is-active': tab.isActive, 'is-disabled': tab.isDisabled }"
-        class="tabs-component-tab"
+        class="flex-1 text-sm list-none transition border-b-0 border-t-2 hover:border-primary hover:text-gray-600"
+        :class="[
+          {
+            'border-primary z-10 bg-white': tab.isActive,
+            'is-disabled': tab.isDisabled,
+          },
+          tab.isActive ? 'border-primary' : 'border-gray-200',
+          tab.isDisabled ? 'cursor-not-allowed text-gray-300' : 'text-gray-800',
+        ]"
         role="presentation"
       >
         <a
           :aria-selected="tab.isActive"
           :aria-controls="tab.hash"
           :href="tab.hash"
-          class="tabs-component-tab-a"
+          class="items-center block px-4 py-3 no-underline text-center text-inherit"
           role="tab"
           @click="selectTab(tab.hash, $event)"
         >
@@ -21,7 +28,7 @@
         </a>
       </li>
     </ul>
-    <div class="tabs-component-panels">
+    <div class="bg-white px-5 py-4">
       <slot />
     </div>
   </div>
@@ -52,17 +59,12 @@ export default Vue.extend({
     this.tabs = this.$children as TabComponent[]
   },
   mounted() {
-    window.addEventListener('hashchange', () =>
-      this.selectTab(window.location.hash)
-    )
+    window.addEventListener('hashchange', () => this.selectTab(window.location.hash))
     if (this.findTab(window.location.hash)) {
       this.selectTab(window.location.hash)
       return
     }
-    if (
-      this.options.defaultTabHash !== null &&
-      this.findTab('#' + this.options.defaultTabHash)
-    ) {
+    if (this.options.defaultTabHash !== null && this.findTab('#' + this.options.defaultTabHash)) {
       this.selectTab('#' + this.options.defaultTabHash)
       return
     }
@@ -134,60 +136,3 @@ export default Vue.extend({
   },
 })
 </script>
-<style lang="scss">
-.tabs-component {
-  margin: 4em 0;
-  border-left: 1px solid $gray-300;
-  border-right: 1px solid $gray-300;
-  border-bottom: 1px solid $gray-300;
-  .tabs-component-tabs {
-    padding: 0;
-    border: 0;
-    align-items: stretch;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: -1px;
-    background-color: $gray-200;
-    .tabs-component-tab {
-      color: $dark;
-      font-size: 14px;
-      font-weight: 600;
-      list-style: none;
-      border-bottom: 0;
-      transition: 0.15s all;
-      border-top: 2px solid $gray-200;
-      flex: 1;
-      &:hover {
-        transition: 0.15s all;
-        border-top: 2px solid $primary;
-        color: $gray-600;
-      }
-      &.is-active {
-        color: $dark;
-        border-top: 2px solid $primary;
-        border-bottom: 0;
-        z-index: 2;
-        transform: translateY(0);
-        background-color: $white;
-      }
-      &.is-disabled * {
-        color: #cdcdcd;
-        cursor: not-allowed !important;
-      }
-
-      .tabs-component-tab-a {
-        align-items: center;
-        color: inherit;
-        display: block;
-        padding: 0.75em 1em;
-        text-decoration: none;
-        text-align: center;
-      }
-    }
-  }
-  .tabs-component-panels {
-    background-color: $white;
-    padding: 1em 1.3em;
-  }
-}
-</style>

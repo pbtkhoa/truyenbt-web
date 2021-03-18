@@ -72,7 +72,7 @@ body {
 // See https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible
 // and https://developer.paciellogroup.com/blog/2018/03/focus-visible-and-backwards-compatibility/
 
-[tabindex="-1"]:focus:not(:focus-visible) {
+[tabindex='-1']:focus:not(:focus-visible) {
   outline: 0 !important;
 }
 
@@ -446,7 +446,7 @@ select {
 // Set the cursor for non-`<button>` buttons
 //
 // Details at https://github.com/twbs/bootstrap/pull/30562
-[role="button"] {
+[role='button'] {
   cursor: pointer;
 }
 
@@ -553,7 +553,7 @@ legend {
 //    be added to `.form-control` as it's not specific enough. For details, see
 //    https://github.com/twbs/bootstrap/issues/11586.
 
-[type="search"] {
+[type='search'] {
   outline-offset: -2px; // 1
   -webkit-appearance: textfield; // 2
 }

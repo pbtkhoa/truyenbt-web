@@ -1,17 +1,32 @@
 <template>
   <div>
-    <div v-for="(manga, index) in mangas" :key="manga._id" :class="$style.mangaItem">
-      <span :class="$style.mangaTopNumber">{{ index + 1 }}</span>
-      <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
-        <img v-lazy="manga.imagePreview" />
+    <div
+      v-for="(manga, index) in mangas"
+      :key="manga._id"
+      class="flex items-center pb-3 mb-3 border-b border-gray-300 last:border-b-0"
+    >
+      <span class="mr-4 w-4 text-xl">{{ index + 1 }}</span>
+      <nuxt-link
+        class="w-20 h-16 inline-block overflow-hidden relative mr-4 transition group"
+        :to="{ name: 'slug', params: { slug: manga.slug } }"
+      >
+        <img
+          v-lazy="manga.imagePreview"
+          class="w-full absolute transform right-1/2 bottom-1/2 translate-x-1/2 translate-y-1/2"
+        />
+        <div class="absolute left-0 right-0 top-0 bottom-0 bg-black opacity-0 group-hover:opacity-25" />
       </nuxt-link>
-      <div :class="$style.mangaItemContent">
-        <h5>
-          <nuxt-link :to="{ name: 'slug', params: { slug: manga.slug } }">{{ manga.name }}</nuxt-link>
-        </h5>
-        <div class="d-flex justify-content-between">
+      <div class="flex-1">
+        <h6>
           <nuxt-link
-            :class="$style.mangaItemChapter"
+            :to="{ name: 'slug', params: { slug: manga.slug } }"
+            class="text-gray-900 no-underline transition hover:text-primary"
+            >{{ manga.name }}</nuxt-link
+          >
+        </h6>
+        <div class="flex justify-between">
+          <nuxt-link
+            class="text-sm text-gray-900 no-underline transition hover:text-primary"
             :to="{
               name: 'slug-chapter',
               params: {
@@ -22,7 +37,7 @@
           >
             Chapter {{ getFirstChapterNumber(manga) }}
           </nuxt-link>
-          <span :class="$style.mangaItemView">
+          <span class="text-gray-600 italic text-xs">
             {{ manga.viewCount | formatCount }}
           </span>
         </div>
@@ -34,6 +49,7 @@
 <script lang="ts">
 import Vue, { PropOptions } from 'vue'
 import Manga from '~/models/Manga'
+
 export default Vue.extend({
   props: {
     mangas: {
@@ -50,80 +66,3 @@ export default Vue.extend({
   },
 })
 </script>
-<style lang="scss" module>
-.mangaItem {
-  display: flex;
-  align-items: center;
-  &:not(:last-child) {
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid $gray-300;
-  }
-  .mangaTopNumber {
-    margin-right: 12px;
-    width: 16px;
-    font-size: $h4-font-size;
-  }
-  .mangaItemImage {
-    width: 80px;
-    height: 70px;
-    display: inline-block;
-    overflow: hidden;
-    position: relative;
-    margin-right: 10px;
-    transition: 0.2s all;
-    &:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      background-color: $black;
-      opacity: 0;
-      transition: 0.2s all;
-    }
-    &:hover:after {
-      opacity: 0.25;
-      transition: 0.2s all;
-    }
-    img {
-      width: 100%;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
-  .mangaItemContent {
-    flex: 1;
-    h5 {
-      font-size: $h5-font-size * 0.9;
-      a {
-        color: $gray-900;
-        text-decoration: none;
-        transition: all 0.2s;
-        &:hover {
-          color: $primary;
-          transition: all 0.2s;
-        }
-      }
-    }
-    .mangaItemChapter {
-      font-size: $font-size-base * 0.9;
-      color: $gray-900;
-      text-decoration: none;
-      transition: all 0.2s;
-      &:hover {
-        color: $primary;
-        transition: all 0.2s;
-      }
-    }
-    .mangaItemView {
-      font-size: $font-size-base * 0.8;
-      font-style: italic;
-      color: $gray-600;
-    }
-  }
-}
-</style>

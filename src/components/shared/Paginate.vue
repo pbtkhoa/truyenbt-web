@@ -1,95 +1,109 @@
 <template>
-  <ul :class="[$style.pagination, containerClass]">
-    <li
-      v-if="firstLastButton"
-      :class="[
-        $style.list,
-        pageClass,
-        firstPageSelected() ? disabledClass : '',
-      ]"
-    >
+  <ul :class="['list-none m-0 p-0', containerClass]">
+    <li v-if="firstLastButton" :class="['inline-block h-12 mr-2 group last:mr-0', pageClass]">
       <a
-        :class="[$style.link, pageLinkClass]"
+        :class="[
+          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
+          pageLinkClass,
+          firstPageSelected() ? 'text-gray-500' : '',
+        ]"
         :tabindex="firstPageSelected() ? -1 : 0"
         @click="selectFirstPage()"
         @keyup.enter="selectFirstPage()"
-        >{{ firstButtonText }}</a
       >
+        {{ firstButtonText }}
+      </a>
     </li>
 
-    <li
-      v-if="!(firstPageSelected() && hidePrevNext)"
-      :class="[
-        $style.list,
-        prevClass,
-        firstPageSelected() ? disabledClass : '',
-      ]"
-    >
+    <li v-if="!(firstPageSelected() && hidePrevNext)" :class="['inline-block h-12 mr-2 group last:mr-0', prevClass]">
       <a
         :tabindex="firstPageSelected() ? -1 : 0"
-        :class="[$style.link, prevLinkClass]"
+        :class="[
+          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
+          prevLinkClass,
+          firstPageSelected() ? 'text-gray-500' : '',
+        ]"
         @click="prevPage()"
         @keyup.enter="prevPage()"
-        >{{ prevText }}</a
       >
+        {{ prevText }}
+      </a>
     </li>
 
     <li
       v-for="(page, idx) in pages"
       :key="idx"
       :class="[
-        $style.list,
+        'inline-block h-12 mr-2 group last:mr-0',
         pageClass,
-        page.selected ? $style.active : '',
-        page.disabled ? disabledClass : '',
+        page.disabled ? 'text-gray-500' : '',
         page.breakView ? breakViewClass : '',
       ]"
     >
       <a
         v-if="page.breakView"
-        :class="[$style.breakView, pageLinkClass, breakViewLinkClass]"
+        :class="[
+          'block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-not-allowed',
+          pageLinkClass,
+          breakViewLinkClass,
+        ]"
         tabindex="0"
-        ><slot name="breakViewContent">{{ breakViewText }}</slot></a
       >
+        <slot name="breakViewContent">{{ breakViewText }}</slot>
+      </a>
       <a
         v-else-if="page.disabled"
-        :class="[$style.link, pageLinkClass]"
+        :class="[
+          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
+          page.selected ? 'border-primary text-primary' : '',
+          pageLinkClass,
+        ]"
         tabindex="0"
-        >{{ page.content }}</a
       >
+        {{ page.content }}
+      </a>
       <a
         v-else
         tabindex="0"
-        :class="[$style.link, pageLinkClass]"
+        :class="[
+          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
+          page.selected ? 'border-primary text-primary' : '',
+          pageLinkClass,
+        ]"
         @click="handlePageSelected(page.index + 1)"
         @keyup.enter="handlePageSelected(page.index + 1)"
-        >{{ page.content }}</a
       >
+        {{ page.content }}
+      </a>
     </li>
-    <li
-      v-if="!(lastPageSelected() && hidePrevNext)"
-      :class="[$style.list, nextClass, lastPageSelected() ? disabledClass : '']"
-    >
+    <li v-if="!(lastPageSelected() && hidePrevNext)" :class="['inline-block h-12 mr-2 group last:mr-0', nextClass]">
       <a
-        :class="[$style.link, nextLinkClass]"
+        :class="[
+          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
+          nextLinkClass,
+          lastPageSelected() ? 'text-gray-500' : '',
+        ]"
         :tabindex="lastPageSelected() ? -1 : 0"
         @click="nextPage()"
         @keyup.enter="nextPage()"
-        >{{ nextText }}</a
       >
+        {{ nextText }}
+      </a>
     </li>
 
-    <li
-      v-if="firstLastButton"
-      :class="[$style.list, pageClass, lastPageSelected() ? disabledClass : '']"
-    >
+    <li v-if="firstLastButton" :class="['inline-block h-12 mr-2 group last:mr-0', pageClass]">
       <a
-        :class="[$style.link, pageLinkClass]"
+        :class="[
+          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
+          pageLinkClass,
+          lastPageSelected() ? 'text-gray-500' : '',
+        ]"
         :tabindex="lastPageSelected() ? -1 : 0"
         @click="selectLastPage()"
         @keyup.enter="selectLastPage()"
-        >{{ lastButtonText }}</a
       >
+        {{ lastButtonText }}
+      </a>
     </li>
   </ul>
 </template>
@@ -239,11 +253,7 @@ export default {
           selectedRangeHigh = this.pageCount - 1
           selectedRangeLow = selectedRangeHigh - this.pageRange + 1
         }
-        for (
-          let i = selectedRangeLow;
-          i <= selectedRangeHigh && i <= this.pageCount - 1;
-          i++
-        ) {
+        for (let i = selectedRangeLow; i <= selectedRangeHigh && i <= this.pageCount - 1; i++) {
           setPageItem(i)
         }
         // Check if there is breakView in the left of selected range
@@ -255,11 +265,7 @@ export default {
           setBreakView(selectedRangeHigh + 1)
         }
         // 3rd - loop thru high end of margin pages
-        for (
-          let i = this.pageCount - 1;
-          i >= this.pageCount - this.marginPages;
-          i--
-        ) {
+        for (let i = this.pageCount - 1; i >= this.pageCount - this.marginPages; i--) {
           setPageItem(i)
         }
       }
@@ -304,62 +310,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.disabled {
-  a {
-    color: $gray-500 !important;
-  }
-}
-</style>
-
-<style lang="scss" module>
-.pagination {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  .list {
-    display: inline-block;
-    height: 34px;
-    min-width: 34px;
-    line-height: 32px;
-    margin-right: 8px;
-    &:last-child {
-      margin-right: 0;
-    }
-    .breakView {
-      display: block;
-      padding: 0 6px;
-      color: $black;
-      text-decoration: none;
-      text-align: center;
-      background-color: transparent;
-      outline: none;
-      cursor: not-allowed;
-    }
-    .link {
-      transition: 0.3s all;
-      display: block;
-      padding: 0 6px;
-      color: $black;
-      text-decoration: none;
-      text-align: center;
-      background-color: transparent;
-      outline: none;
-      cursor: pointer;
-      border: 1px solid $gray-500;
-      border-radius: 2px;
-      font-size: $font-size-base * 0.9;
-    }
-    &.active,
-    &:hover {
-      .link {
-        transition: 0.3s all;
-        border: 1px solid $primary;
-        color: $primary;
-        font-weight: $font-weight-bold;
-      }
-    }
-  }
-}
-</style>

@@ -197,3 +197,27 @@ input.form-input {
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
+.btn-primary {
+  @apply text-center text-red-500 text-sm bg-transparent no-underline outline-none py-0.5 px-1 mx-0.5 rounded border border-red-500 transition hover:text-white hover:bg-red-400;
+  &.active {
+    @apply transition text-white bg-red-500;
+  }
+}
+
+.tag-list {
+  @apply m-0 border-collapse w-full;
+  tr {
+    @apply border border-gray-300;
+    td {
+      @apply px-3 py-2 text-gray-900;
+      a {
+        @apply no-underline text-gray-900 transition;
+        &:hover,
+        &.tag-active {
+          @apply text-primary;
+        }
+      }
+    }
+  }
+}
