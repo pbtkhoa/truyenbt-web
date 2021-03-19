@@ -1,42 +1,94 @@
 <template>
-  <header :class="$style.header">
-    <div :class="$style.headerTop">
-      <div :class="[$style.container, 'container justify-content-between d-flex']">
-        <img src="/logo.png" alt="TruyenBT" :class="$style.logo" />
-        <ul :class="$style.topLinks">
-          <li>
-            <nuxt-link to="/">TRANG CHỦ</nuxt-link>
+  <header>
+    <div class="h-20 bg-gradient-to-r from-primary to-secondary">
+      <div class="container mx-auto px-4 justify-between flex h-inherit">
+        <img src="/logo.png" alt="TruyenBT" class="h-full" />
+        <ul class="p-0 m-0 list-none flex justify-center items-center">
+          <li class="ml-10">
+            <nuxt-link to="/" class="relative text-white no-underline group">
+              TRANG CHỦ
+              <div
+                class="h-0.5 w-0 bg-white opacity-50 block absolute -bottom-2 left-1/2 transform -translate-x-1/2 transition-all group-hover:w-3/4"
+              />
+            </nuxt-link>
           </li>
-          <li>
-            <a href="#">LỊCH SỬ</a>
+          <li class="ml-10">
+            <a href="#" class="relative text-white no-underline group">
+              LỊCH SỬ
+              <div
+                class="h-0.5 w-0 bg-white opacity-50 block absolute -bottom-2 left-1/2 transform -translate-x-1/2 transition-all group-hover:w-3/4"
+              />
+            </a>
           </li>
-          <li v-if="$auth.user">
-            <a href="#">Tài khoản</a>
+          <li v-if="$auth.user" class="ml-10">
+            <a href="#" class="relative text-white no-underline group">
+              Tài khoản
+              <div
+                class="h-0.5 w-0 bg-white opacity-50 block absolute -bottom-2 left-1/2 transform -translate-x-1/2 transition-all group-hover:w-3/4"
+              />
+            </a>
           </li>
-          <li v-else>
-            <a href="#" @click="onClickLogin">Đăng nhập</a>
-            <span>/</span>
-            <a href="#" @click="onClickRegister">Đăng ký</a>
+          <li v-else class="ml-10">
+            <a href="#" class="relative text-white no-underline group" @click="onClickLogin">
+              Đăng nhập
+              <div
+                class="h-0.5 w-0 bg-white opacity-50 block absolute -bottom-2 left-1/2 transform -translate-x-1/2 transition-all group-hover:w-3/4"
+              />
+            </a>
+            <span class="text-white">/</span>
+            <a href="#" class="relative text-white no-underline group" @click="onClickRegister">
+              Đăng ký
+              <div
+                class="h-0.5 w-0 bg-white opacity-50 block absolute -bottom-2 left-1/2 transform -translate-x-1/2 transition-all group-hover:w-3/4"
+              />
+            </a>
           </li>
         </ul>
       </div>
     </div>
-    <div :class="['bg-white', $style.headerBottom]">
-      <div class="container d-flex">
-        <ul :class="$style.bottomLink">
-          <li v-for="(item, lIndex) in navList" :key="lIndex">
+    <div class="bg-white h-14 border-b border-gray-300 flex">
+      <div class="container mx-auto px-4 flex">
+        <ul class="p-0 m-0 list-none flex justify-center items-center">
+          <li v-for="(item, lIndex) in navList" :key="lIndex" class="mr-10 relative h-full flex items-center">
             <template v-if="item.children">
-              <a :href="item.to" :title="item.name" :class="{ active }" @click="toggleDropDown">{{ item.name }} </a>
-              <div :class="[$style.dropdown, isOpen ? $style.isOpen : undefined]">
-                <ul>
-                  <li v-for="{ to, name, index } in item.children" :key="index" @click="toggleDropDown">
-                    <nuxt-link :to="to" :title="name">{{ name }}</nuxt-link>
+              <a
+                :href="item.to"
+                :title="item.name"
+                :class="{ active }"
+                class="text-gray-600 no-underline font-bold hover:text-primary"
+                @click="toggleDropDown"
+                >{{ item.name }}
+              </a>
+              <div
+                :class="[
+                  'absolute top-full rounded-bl-md rounded-b-md p-1.5 bg-white invisible opacity-0 transition ease-linear shadow',
+                  isOpen ? 'z-50 visible opacity-100' : '',
+                ]"
+              >
+                <ul class="min-width-650 list-none p-0 m-0 flex flex-wrap">
+                  <li
+                    v-for="{ to, name, index } in item.children"
+                    :key="index"
+                    class="py-3 px-2 w-36"
+                    @click="toggleDropDown"
+                  >
+                    <nuxt-link
+                      :to="to"
+                      :title="name"
+                      class="text-gray-900 no-underline text-sm transition hover:text-primary"
+                      >{{ name }}</nuxt-link
+                    >
                   </li>
                 </ul>
               </div>
             </template>
             <template v-else>
-              <nuxt-link :to="item.to" :title="item.name">{{ item.name }}</nuxt-link>
+              <nuxt-link
+                :to="item.to"
+                :title="item.name"
+                class="text-gray-600 no-underline font-bold hover:text-primary"
+                >{{ item.name }}</nuxt-link
+              >
             </template>
           </li>
         </ul>
@@ -124,124 +176,3 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style lang="scss" module>
-.header {
-  .headerTop {
-    height: 100px;
-    background: linear-gradient(to right, $primary 40%, $secondary);
-    .container {
-      height: inherit;
-
-      .topLinks {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        justify-content: center;
-        display: flex;
-        align-items: center;
-        li {
-          margin-right: 40px;
-          a {
-            color: $white;
-            text-decoration: none;
-            position: relative;
-            &:before {
-              content: '';
-              transition: 0.2s all;
-              height: 2px;
-              width: 0;
-              background: $white;
-              opacity: 0.5;
-              display: block;
-              position: absolute;
-              bottom: -8px;
-              left: 50%;
-              transform: translateX(-50%);
-            }
-            &:hover {
-              &:before {
-                transition: 0.2s all;
-                width: 70%;
-              }
-            }
-          }
-        }
-      }
-
-      .logo {
-        height: 100%;
-      }
-    }
-  }
-  .headerBottom {
-    height: 50px;
-    border-bottom: 1px solid $gray-300;
-    display: flex;
-    .bottomLink {
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      justify-content: center;
-      display: flex;
-      align-items: center;
-      > li {
-        margin-right: 40px;
-        position: relative;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        > a {
-          color: $gray-600;
-          text-decoration: none;
-          font-weight: $font-weight-bold;
-          &:hover {
-            color: $primary;
-          }
-        }
-        > .dropdown {
-          position: absolute;
-          margin-top: 1px;
-          top: 100%;
-          transform-origin: 0 0;
-          border-bottom-left-radius: 5px;
-          border-bottom-right-radius: 5px;
-          padding: 5px;
-          background-color: $white;
-          box-shadow: 0 0 3px 1px $gray-500;
-          visibility: hidden;
-          opacity: 0;
-          transition: all 200ms linear;
-          &.isOpen {
-            z-index: 99999;
-            visibility: visible;
-            opacity: 1;
-          }
-          > ul {
-            list-style: none;
-            min-width: 600px;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-wrap: wrap;
-            > li {
-              padding: 7px 5px;
-              width: 150px;
-              > a {
-                color: $gray-900;
-                text-decoration: none;
-                font-size: $font-size-base * 0.9;
-                transition: 0.2s all;
-                &:hover {
-                  color: $primary;
-                  transition: 0.2s all;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-</style>

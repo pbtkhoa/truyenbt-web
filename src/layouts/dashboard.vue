@@ -1,5 +1,5 @@
 <template>
-  <main :class="$style.dashboard">
+  <main class="bg-gray-100">
     <Header />
     <Nuxt />
   </main>
@@ -13,9 +13,3 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style lang="scss" module>
-.dashboard {
-  background-color: $gray-200;
-}
-</style>

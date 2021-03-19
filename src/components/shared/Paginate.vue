@@ -54,8 +54,8 @@
       <a
         v-else-if="page.disabled"
         :class="[
-          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
-          page.selected ? 'border-primary text-primary' : '',
+          'transition block py-1 px-3 no-underline text-center bg-transparent outline-none cursor-pointer border rounded text-sm hover:border-primary hover:text-primary',
+          page.selected ? 'border-primary text-primary' : 'border-gray-500 text-black',
           pageLinkClass,
         ]"
         tabindex="0"
@@ -66,8 +66,8 @@
         v-else
         tabindex="0"
         :class="[
-          'transition block py-1 px-3 text-black no-underline text-center bg-transparent outline-none cursor-pointer border border-gray-500 rounded text-sm hover:border-primary hover:text-primary',
-          page.selected ? 'border-primary text-primary' : '',
+          'transition block py-1 px-3 no-underline text-center bg-transparent outline-none cursor-pointer border rounded text-sm hover:border-primary hover:text-primary',
+          page.selected ? 'border-primary text-primary' : 'border-gray-500 text-black',
           pageLinkClass,
         ]"
         @click="handlePageSelected(page.index + 1)"

@@ -1,19 +1,24 @@
 <template>
-  <section :class="['bg-white', $style.chapterDetail]">
-    <div :class="['position-sticky', $style.chapterInfo]">
-      <div class="container">
-        <h1 :class="$style.chapterName">{{ mangaChapter.name }} - Chap {{ mangaChapter.chapter.number }}</h1>
-        <div :class="$style.chapterPaginate">
-          <div :class="$style.selectView">
-            <v-select v-model="selectedChapter" :options="chapterList" :clearable="false" label="label"></v-select>
-          </div>
-          <div :class="$style.navigate">
+  <section class="bg-white pt-3">
+    <div class="sticky bg-white pt-3 pb-6 top-0">
+      <div class="container mx-auto px-4">
+        <h1 class="text-3xl mb-4">{{ mangaChapter.name }} - Chap {{ mangaChapter.chapter.number }}</h1>
+        <div class="flex flex-wrap justify-between">
+          <v-select
+            v-model="selectedChapter"
+            :options="chapterList"
+            :clearable="false"
+            label="label"
+            class="w-64"
+          ></v-select>
+          <div>
             <nuxt-link
               v-if="prevChapter"
               :to="{
                 name: 'slug-chapter',
                 params: { slug, chapter: prevChapter.number },
               }"
+              class="ml-2 py-2 px-3 no-underline rounded border border-primary bg-transparent text-primary transition hover:bg-primary hover:text-white"
             >
               Chap trước
             </nuxt-link>
@@ -23,6 +28,7 @@
                 name: 'slug-chapter',
                 params: { slug, chapter: nextChapter.number },
               }"
+              class="ml-2 py-2 px-3 no-underline rounded border border-primary bg-transparent text-primary transition hover:bg-primary hover:text-white"
             >
               Chap sau
             </nuxt-link>
@@ -30,8 +36,14 @@
         </div>
       </div>
     </div>
-    <div :class="$style.chapterImages">
-      <img v-for="(image, index) in media" :key="index" v-lazy="image.src || image.thumb" @click="openGallery(index)" />
+    <div class="pb-10 text-center">
+      <img
+        v-for="(image, index) in media"
+        :key="index"
+        v-lazy="image.src || image.thumb"
+        class="h-auto block m-auto max-w-full"
+        @click="openGallery(index)"
+      />
     </div>
     <client-only>
       <light-box ref="lightbox" :show-light-box="false" :site-loading="imageLoading" :media="media" />
@@ -138,55 +150,4 @@ export default Vue.extend({
 </script>
 <style lang="scss">
 @import '~vue-select/src/scss/vue-select.scss';
-</style>
-
-<style lang="scss" module>
-.chapterDetail {
-  padding: 10px 0 0;
-  .chapterInfo {
-    top: 0;
-    background-color: white;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    .chapterName {
-      font-size: $h3-font-size;
-      margin-bottom: 15px;
-    }
-    .chapterPaginate {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      .selectView {
-        min-width: 300px;
-      }
-      .navigate {
-        a {
-          margin-left: 10px;
-          border-radius: 3px;
-          border: 1px solid $primary;
-          background-color: transparent;
-          color: $primary;
-          padding: 8px 10px;
-          text-decoration: none;
-          transition: 0.2s all;
-          &:hover {
-            transition: 0.2s all;
-            background-color: $primary;
-            color: $white;
-          }
-        }
-      }
-    }
-  }
-  .chapterImages {
-    padding-bottom: 40px;
-    text-align: center;
-    img {
-      height: auto;
-      display: block;
-      margin: auto;
-      max-width: 100%;
-    }
-  }
-}
 </style>

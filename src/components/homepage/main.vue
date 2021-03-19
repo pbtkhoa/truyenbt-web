@@ -1,9 +1,9 @@
 <template>
-  <section :class="['bg-white']">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 pt-4">
-          <h2 :class="$style.title">TRUYỆN MỚI CẬP NHẬT</h2>
+  <section class="bg-white">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-12 gap-5">
+        <div class="pt-4 col-span-8">
+          <h2 class="text-2xl mb-4 text-gray-900 uppercase">TRUYỆN MỚI CẬP NHẬT</h2>
           <manga-list :on-change-paginate="onChangePaginate" :mangas="mangas" :total-pages="totalPages" />
         </div>
         <top-manga />
@@ -41,11 +41,3 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style module lang="scss">
-.title {
-  font-size: $h5-font-size * 1.1;
-  color: $gray-900;
-  text-transform: uppercase;
-}
-</style>

@@ -1,16 +1,26 @@
 <template>
-  <section class="container">
+  <section class="container mx-auto px-4">
     <div v-swiper="swiperOptions" :class="$style.swiper">
       <div class="swiper-wrapper">
         <div v-for="manga in hotMangas" :key="manga._id" :class="['swiper-slide', $style.swiperSlide]">
-          <nuxt-link :class="$style.mangaItemImage" :to="{ name: 'slug', params: { slug: manga.slug } }">
-            <img v-lazy="manga.imagePreview" />
+          <nuxt-link
+            class="relative block overflow-hidden bg-white h-full group"
+            :to="{ name: 'slug', params: { slug: manga.slug } }"
+          >
+            <img
+              v-lazy="manga.imagePreview"
+              class="absolute w-full right-1/2 bottom-1/2 transform translate-x-1/2 translate-y-1/2 transition duration-300 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-black opacity-0 transition duration-300 group-hover:opacity-25" />
           </nuxt-link>
-          <div :class="$style.mangaItemContent">
-            <nuxt-link :to="{ name: 'slug', params: { slug: manga.slug } }" :class="$style.mangaItemName">{{
-              manga.name
-            }}</nuxt-link>
-            <div :class="$style.mangaItemInfo">
+          <div class="absolute flex flex-col justify-around pl-3 pr-3 inset-x-0 bottom-0 bg-black bg-opacity-60 h-12">
+            <nuxt-link
+              :to="{ name: 'slug', params: { slug: manga.slug } }"
+              class="text-center text-white text-base h-6 truncate mb-0 no-underline transition hover:text-secondary"
+            >
+              {{ manga.name }}
+            </nuxt-link>
+            <div class="flex justify-between">
               <nuxt-link
                 :to="{
                   name: 'slug-chapter',
@@ -19,9 +29,11 @@
                     chapter: getFirstChapterNumber(manga),
                   },
                 }"
-                >Chapter {{ getFirstChapterNumber(manga) }}</nuxt-link
+                class="text-xs text-white no-underline transition hover:text-secondary"
               >
-              <time>{{ manga.publishedAt | formatDiffDate }}</time>
+                Chapter {{ getFirstChapterNumber(manga) }}
+              </nuxt-link>
+              <time class="text-xs text-white">{{ manga.publishedAt | formatDiffDate }}</time>
             </div>
           </div>
         </div>
@@ -78,95 +90,10 @@ export default Vue.extend({
 
 <style lang="scss" module>
 .swiper {
-  padding: 10px 0;
+  @apply py-4;
   .swiperSlide {
     width: 190px;
     height: 247px;
-  }
-  .mangaItemImage {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    background-color: $white;
-    height: 100%;
-    img {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-      transition: 0.4s all;
-    }
-    &:after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      background-color: $black;
-      opacity: 0;
-      transition: 0.4s all;
-    }
-    &:hover {
-      img {
-        transition: 0.4s all;
-        transform: translate(-50%, -50%) scale(1.1);
-      }
-      &:after {
-        opacity: 0.25;
-        transition: 0.4s all;
-      }
-    }
-  }
-
-  .mangaItemContent {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 50px;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding-left: 8px;
-    padding-right: 8px;
-    .mangaItemName {
-      text-align: center;
-      color: $white;
-      font-size: $font-size-base;
-      height: 19px;
-      line-height: 19px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin: 0;
-      text-decoration: none;
-      transition: all 0.2s;
-      &:hover {
-        color: $secondary;
-        transition: all 0.2s;
-      }
-    }
-    .mangaItemInfo {
-      display: flex;
-      justify-content: space-between;
-      a {
-        font-size: $font-size-base * 0.8;
-        color: $white;
-        text-decoration: none;
-        transition: all 0.2s;
-        &:hover {
-          color: $secondary;
-          transition: all 0.2s;
-        }
-      }
-      time {
-        font-size: $font-size-base * 0.8;
-        color: $white;
-      }
-    }
   }
 }
 </style>

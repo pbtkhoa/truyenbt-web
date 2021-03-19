@@ -7,14 +7,14 @@
     >
       <span class="mr-4 w-4 text-xl">{{ index + 1 }}</span>
       <nuxt-link
-        class="w-20 h-16 inline-block overflow-hidden relative mr-4 transition group"
+        class="w-20 h-16 inline-block overflow-hidden relative mr-4 group"
         :to="{ name: 'slug', params: { slug: manga.slug } }"
       >
         <img
           v-lazy="manga.imagePreview"
           class="w-full absolute transform right-1/2 bottom-1/2 translate-x-1/2 translate-y-1/2"
         />
-        <div class="absolute left-0 right-0 top-0 bottom-0 bg-black opacity-0 group-hover:opacity-25" />
+        <div class="absolute inset-0 bg-black opacity-0 transition group-hover:opacity-25" />
       </nuxt-link>
       <div class="flex-1">
         <h6>

@@ -1,6 +1,6 @@
 <template>
-  <div class="my-14 border-l-1 border-t-1 border-r-1 border-gray-300">
-    <ul role="tabList" class="p-0 border-0 items-stretch flex justify-between bg-gray-200 mb-0">
+  <div class="my-14 border-l border-b border-r border-gray-300">
+    <ul role="tabList" class="p-0 items-stretch flex justify-between bg-gray-200 mb-0">
       <li
         v-for="(tab, i) in tabs"
         v-show="tab.isVisible"
@@ -28,7 +28,7 @@
         </a>
       </li>
     </ul>
-    <div class="bg-white px-5 py-4">
+    <div class="bg-white px-5 pt-4">
       <slot />
     </div>
   </div>

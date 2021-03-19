@@ -1,54 +1,53 @@
 <template>
-  <div :class="['container', $style.profile]">
-    <div :class="['bg-white', $style.profileImage]">
-      <img v-lazy="manga.imagePreview" />
+  <div class="container mx-auto px-4 mb-4 grid grid-cols-12 gap-5">
+    <div class="bg-white text-center col-span-3 px-4 py-4 flex justify-center items-center">
+      <img v-lazy="manga.imagePreview" class="shadow" />
     </div>
-    <div :class="['bg-white', $style.profileDetail]">
-      <h1 :class="$style.profileName">{{ manga.name }}</h1>
-      <p :class="$style.summary">{{ manga.description }}</p>
-      <div :class="$style.profileContent">
-        <div :class="$style.contentItem">
-          <div :class="$style.contentHeading">
-            <h5>Tác giả</h5>
+    <div class="bg-white col-span-9 py-3 px-5">
+      <h1 class="text-3xl mb-4">{{ manga.name }}</h1>
+      <p class="mb-4">{{ manga.description }}</p>
+      <div class="mb-4">
+        <div class="flex mb-1">
+          <div class="w-48">
+            <h5 class="text-base">Tác giả</h5>
           </div>
-          <div :class="$style.contentDetail">
-            <a href="#">{{ manga.author.name }}</a>
-          </div>
+          <a href="#" class="text-gray-900 transition no-underline hover:text-primary">{{ manga.author.name }}</a>
         </div>
-        <div :class="$style.contentItem">
-          <div :class="$style.contentHeading">
-            <h5>Tình trạng</h5>
+        <div class="flex mb-1">
+          <div class="w-48">
+            <h5 class="text-base">Tình trạng</h5>
           </div>
-          <div :class="$style.contentDetail">
-            <span>{{ manga.status | formatMangaStatus }}</span>
-          </div>
+          <span>{{ manga.status | formatMangaStatus }}</span>
         </div>
-        <div :class="$style.contentItem">
-          <div :class="$style.contentHeading">
-            <h5>Thống kê</h5>
+        <div class="flex mb-1">
+          <div class="w-48">
+            <h5 class="text-base">Thống kê</h5>
           </div>
-          <div :class="$style.contentDetail">
-            <span :class="$style.countInfo">
-              <font-awesome-icon icon="thumbs-up" :class="$style.countIcon" />{{ manga.like | formatCount }}
-            </span>
-            <span :class="$style.countInfo">
-              <font-awesome-icon icon="heart" :class="$style.countIcon" />{{ manga.follow | formatCount }}
-            </span>
-            <span :class="$style.countInfo">
-              <font-awesome-icon icon="eye" :class="$style.countIcon" />{{ manga.viewCount | formatCount }}
-            </span>
-          </div>
+          <span class="text-base mr-8">
+            <font-awesome-icon icon="thumbs-up" class="text-sm mr-2" />{{ manga.like | formatCount }}
+          </span>
+          <span class="text-base mr-8">
+            <font-awesome-icon icon="heart" class="text-sm mr-2" />{{ manga.follow | formatCount }}
+          </span>
+          <span class="text-base mr-8">
+            <font-awesome-icon icon="eye" class="text-sm mr-2" />{{ manga.viewCount | formatCount }}
+          </span>
         </div>
       </div>
-      <div :class="$style.profileTags">
-        <nuxt-link v-for="tag in manga.tags" :key="tag._id" :to="{ name: 'tim-truyen', query: { tag: tag.slug } }">
+      <div class="flex flex-wrap">
+        <nuxt-link
+          v-for="tag in manga.tags"
+          :key="tag._id"
+          :to="{ name: 'tim-truyen', query: { tag: tag.slug } }"
+          class="mb-4 py-1 px-2 rounded border border-primary text-primary bg-transparent no-underline mr-2 transition hover:text-white hover:bg-primary"
+        >
           {{ tag.name }}
         </nuxt-link>
       </div>
-      <div :class="[$style.profileAction, 'd-flex']">
+      <div class="flex">
         <button
           v-if="manga.isFollow"
-          :class="[$style.actionBtn, $style.follow]"
+          class="py-2 px-4 h-10 w-36 rounded-full text-white no-underline mr-3 outline-none transition hover:opacity-60 disabled:opacity-60 disabled:cursor-not-allowed bg-orange-500 border border-orange-500 mr-4"
           :disabled="isFollowProcessing"
           @click="onClickUnFollowManga"
         >
@@ -56,18 +55,18 @@
         </button>
         <button
           v-else
-          :class="[$style.actionBtn, $style.follow]"
+          class="py-2 px-4 h-10 w-36 rounded-full text-white no-underline mr-3 outline-none transition hover:opacity-60 disabled:opacity-60 disabled:cursor-not-allowed bg-orange-500 border border-orange-500 mr-4"
           :disabled="isFollowProcessing"
           @click="onClickFollowManga"
         >
-          <font-awesome-icon icon="heart" />Theo dõi
+          <font-awesome-icon icon="heart" /> Theo dõi
         </button>
         <button
-          :class="[$style.actionBtn, $style.like]"
+          class="py-2 px-4 h-10 w-36 rounded-full text-white no-underline mr-3 outline-none transition hover:opacity-60 disabled:opacity-60 disabled:cursor-not-allowed bg-blue-500 border border-blue-500"
           :disabled="isLikeProcessing || manga.isLike"
           @click="onClickLikeManga"
         >
-          <font-awesome-icon icon="thumbs-up" />Thích
+          <font-awesome-icon icon="thumbs-up" /> Thích
         </button>
       </div>
     </div>
@@ -107,124 +106,3 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style module lang="scss">
-.profile {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  .profileImage {
-    width: 230px;
-    text-align: center;
-    margin-right: 40px;
-    padding: 20px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    img {
-      max-width: 190px;
-      box-shadow: 0 0 5px 0 $gray-700;
-    }
-  }
-  .profileDetail {
-    flex: 1;
-    padding: 10px 20px;
-    .profileName {
-      font-size: $h1-font-size * 0.9;
-      margin-bottom: 15px;
-    }
-    .summary {
-      margin-bottom: 18px;
-    }
-    .profileContent {
-      margin-bottom: 15px;
-      .contentItem {
-        display: flex;
-        margin-bottom: 3px;
-        .contentHeading {
-          width: 200px;
-
-          h5 {
-            font-size: $font-size-base;
-          }
-        }
-
-        .contentDetail {
-          .countInfo {
-            font-size: $font-size-base;
-            margin-right: 30px;
-            .countIcon {
-              font-size: $font-size-base * 0.9;
-              margin-right: 8px;
-            }
-          }
-
-          a {
-            color: $gray-900;
-            transition: 0.3s all;
-            text-decoration: none;
-
-            &:hover {
-              transition: 0.3s all;
-              color: $primary;
-            }
-          }
-        }
-      }
-    }
-    .profileTags {
-      display: flex;
-      flex-wrap: wrap;
-      a {
-        margin-bottom: 12px;
-        padding: 4px 8px;
-        border-radius: 3px;
-        border: 1px solid $primary;
-        color: $primary;
-        background-color: transparent;
-        text-decoration: none;
-        margin-right: 10px;
-        transition: 0.2s all;
-        &:hover {
-          transition: 0.2s all;
-          color: $white;
-          background-color: $primary;
-        }
-      }
-    }
-    .profileAction {
-      .actionBtn {
-        padding: 5px 12px;
-        height: 40px;
-        border-radius: 20px;
-        min-width: 150px;
-        color: $white;
-        text-decoration: none;
-        margin-right: 10px;
-        transition: 0.2s all;
-        outline: none;
-        &:hover {
-          transition: 0.2s all;
-          opacity: 0.6;
-        }
-        &:disabled {
-          transition: 0.2s all;
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-        > * {
-          margin-right: 12px;
-        }
-        &.follow {
-          background-color: $orange;
-          border: 1px solid $orange;
-        }
-        &.like {
-          background-color: $blue;
-          border: 1px solid $blue;
-        }
-      }
-    }
-  }
-}
-</style>

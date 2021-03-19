@@ -1,5 +1,5 @@
 <template>
-  <section :class="$style.detail">
+  <section class="pt-4">
     <profile
       :manga="manga"
       :on-click-like-manga="onClickLikeManga"
@@ -70,9 +70,3 @@ export default Vue.extend({
   },
 })
 </script>
-
-<style lang="scss" module>
-.detail {
-  padding: 20px 0 0;
-}
-</style>
